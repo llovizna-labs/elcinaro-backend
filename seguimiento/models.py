@@ -93,3 +93,9 @@ class FertilizanteCultivo(models.Model):
 	fertilizante = models.ForeignKey(Fertilizante)
 	observaciones = models.TextField()
 	cultivo = models.ForeignKey(Cultivo)
+
+	def __str__(self):
+			return '%s - %s' % (self.fertilizante.nombre,self.cultivo.__str__())
+
+	def __unicode__(self):
+			return '%s - %s' % (self.fertilizante.nombre, self.cultivo.__unicode__())

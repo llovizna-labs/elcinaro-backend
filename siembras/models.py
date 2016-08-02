@@ -112,10 +112,10 @@ class LoteSiembra(models.Model):
 	germinado = models.BooleanField(default=True)
 
 	def __str__(self):
-			return '%s - %s' % (self.semilla_utilizada.descripcion, self.proovedor.nombre)
+			return '%s' % (self.semilla_utilizada.descripcion)
 
 	def __unicode__(self):
-			return '%s - %s' % (self.semilla_utilizada.descripcion, self.proovedor.nombre)
+			return '%s' % (self.semilla_utilizada.descripcion)
 
 	class Meta:
 		verbose_name_plural = "Lotes de Siembra"
@@ -136,5 +136,3 @@ class Cultivo(models.Model):
 
 	def __unicode__(self):
 			return '%s - %s' % (self.lote.__unicode__(), self.codigo)
-
-
