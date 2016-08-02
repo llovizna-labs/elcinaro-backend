@@ -1,0 +1,1 @@
+[{"model": "suelos.muestrasuelo", "pk": 1, "fields": {"codigo": "1", "ubicacion": "1-A1", "fecha_registro": "2016-08-01", "parcela": null, "invernadero": 4}}, {"model": "suelos.analisissuelo", "pk": 1, "fields": {"codigo": "1", "muestra": 1, "fecha_registro": "2016-08-01", "fecha_aplicacion": "2016-08-01"}}]
