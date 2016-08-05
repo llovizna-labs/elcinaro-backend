@@ -2,6 +2,12 @@ from __future__ import unicode_literals
 
 from django.db import models
 from siembras.models import Cultivo, Proovedor
+
+import qrcode
+import StringIO
+
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
 # Create your models here.
 
 
@@ -62,6 +68,27 @@ class CrecimientoCultivo(models.Model):
 	unidad = models.IntegerField(default=1, choices=MEDIDAS)
 	fecha_registro = models.DateField(auto_now=True)
 	observaciones = models.TextField(max_length=255)
+	qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
+
+	def generate_qrcode(self):
+
+		qr = qrcode.QRCode(
+			version=1,
+			error_correction=qrcode.constants.ERROR_CORRECT_L,
+			box_size=6,
+			border=0,
+		)
+		qr.add_data(self.pk)
+		qr.make(fit=True)
+
+		img = qr.make_image()
+
+		buffer = StringIO.StringIO()
+		img.save(buffer)
+		filename = 'cultivo-muestra-%s.png' % (self.id)
+		filebuffer = InMemoryUploadedFile(
+			buffer, None, filename, 'image/png', buffer.len, None)
+		self.qrcode.save(filename, filebuffer)
 
 
 class Plaga(models.Model):
