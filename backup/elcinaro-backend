@@ -1,0 +1,3311 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.1
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2016-08-05 11:06:50 EDT
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 235 (class 3079 OID 12123)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2715 (class 0 OID 0)
+-- Dependencies: 235
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 179 (class 1259 OID 149133)
+-- Name: auth_group; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_group (
+    id integer NOT NULL,
+    name character varying(80) NOT NULL
+);
+
+
+ALTER TABLE auth_group OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 149131)
+-- Name: auth_group_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2716 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: auth_group_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_id_seq OWNED BY auth_group.id;
+
+
+--
+-- TOC entry 181 (class 1259 OID 149143)
+-- Name: auth_group_permissions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_group_permissions (
+    id integer NOT NULL,
+    group_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_group_permissions OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 149141)
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_group_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_group_permissions_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2717 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_group_permissions_id_seq OWNED BY auth_group_permissions.id;
+
+
+--
+-- TOC entry 177 (class 1259 OID 149125)
+-- Name: auth_permission; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_permission (
+    id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    content_type_id integer NOT NULL,
+    codename character varying(100) NOT NULL
+);
+
+
+ALTER TABLE auth_permission OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 149123)
+-- Name: auth_permission_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_permission_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_permission_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2718 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: auth_permission_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_permission_id_seq OWNED BY auth_permission.id;
+
+
+--
+-- TOC entry 183 (class 1259 OID 149151)
+-- Name: auth_user; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user (
+    id integer NOT NULL,
+    password character varying(128) NOT NULL,
+    last_login timestamp with time zone,
+    is_superuser boolean NOT NULL,
+    username character varying(30) NOT NULL,
+    first_name character varying(30) NOT NULL,
+    last_name character varying(30) NOT NULL,
+    email character varying(254) NOT NULL,
+    is_staff boolean NOT NULL,
+    is_active boolean NOT NULL,
+    date_joined timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE auth_user OWNER TO postgres;
+
+--
+-- TOC entry 185 (class 1259 OID 149161)
+-- Name: auth_user_groups; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user_groups (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    group_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_groups OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 149159)
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_groups_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_groups_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2719 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_groups_id_seq OWNED BY auth_user_groups.id;
+
+
+--
+-- TOC entry 182 (class 1259 OID 149149)
+-- Name: auth_user_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2720 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: auth_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_id_seq OWNED BY auth_user.id;
+
+
+--
+-- TOC entry 187 (class 1259 OID 149169)
+-- Name: auth_user_user_permissions; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE auth_user_user_permissions (
+    id integer NOT NULL,
+    user_id integer NOT NULL,
+    permission_id integer NOT NULL
+);
+
+
+ALTER TABLE auth_user_user_permissions OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 149167)
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE auth_user_user_permissions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE auth_user_user_permissions_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2721 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE auth_user_user_permissions_id_seq OWNED BY auth_user_user_permissions.id;
+
+
+--
+-- TOC entry 189 (class 1259 OID 149229)
+-- Name: django_admin_log; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_admin_log (
+    id integer NOT NULL,
+    action_time timestamp with time zone NOT NULL,
+    object_id text,
+    object_repr character varying(200) NOT NULL,
+    action_flag smallint NOT NULL,
+    change_message text NOT NULL,
+    content_type_id integer,
+    user_id integer NOT NULL,
+    CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
+);
+
+
+ALTER TABLE django_admin_log OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 149227)
+-- Name: django_admin_log_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_admin_log_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_admin_log_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2722 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: django_admin_log_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_admin_log_id_seq OWNED BY django_admin_log.id;
+
+
+--
+-- TOC entry 175 (class 1259 OID 149115)
+-- Name: django_content_type; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_content_type (
+    id integer NOT NULL,
+    app_label character varying(100) NOT NULL,
+    model character varying(100) NOT NULL
+);
+
+
+ALTER TABLE django_content_type OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 149113)
+-- Name: django_content_type_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_content_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_content_type_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2723 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: django_content_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_content_type_id_seq OWNED BY django_content_type.id;
+
+
+--
+-- TOC entry 173 (class 1259 OID 149104)
+-- Name: django_migrations; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_migrations (
+    id integer NOT NULL,
+    app character varying(255) NOT NULL,
+    name character varying(255) NOT NULL,
+    applied timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_migrations OWNER TO postgres;
+
+--
+-- TOC entry 172 (class 1259 OID 149102)
+-- Name: django_migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE django_migrations_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE django_migrations_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2724 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: django_migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE django_migrations_id_seq OWNED BY django_migrations.id;
+
+
+--
+-- TOC entry 230 (class 1259 OID 149603)
+-- Name: django_session; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE django_session (
+    session_key character varying(40) NOT NULL,
+    session_data text NOT NULL,
+    expire_date timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE django_session OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 149424)
+-- Name: pedidos_cliente; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pedidos_cliente (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    apellido character varying(255) NOT NULL,
+    direccion text NOT NULL,
+    telefono character varying(16) NOT NULL,
+    email character varying(254) NOT NULL,
+    identification character varying(100) NOT NULL
+);
+
+
+ALTER TABLE pedidos_cliente OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 149422)
+-- Name: pedidos_cliente_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pedidos_cliente_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pedidos_cliente_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2725 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: pedidos_cliente_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pedidos_cliente_id_seq OWNED BY pedidos_cliente.id;
+
+
+--
+-- TOC entry 211 (class 1259 OID 149437)
+-- Name: pedidos_detallefactura; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pedidos_detallefactura (
+    id integer NOT NULL,
+    cantidad double precision NOT NULL,
+    unidad integer NOT NULL,
+    precio_unitario double precision NOT NULL,
+    factura_id integer NOT NULL,
+    rubro_id integer NOT NULL
+);
+
+
+ALTER TABLE pedidos_detallefactura OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 149435)
+-- Name: pedidos_detallefactura_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pedidos_detallefactura_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pedidos_detallefactura_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2726 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: pedidos_detallefactura_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pedidos_detallefactura_id_seq OWNED BY pedidos_detallefactura.id;
+
+
+--
+-- TOC entry 213 (class 1259 OID 149445)
+-- Name: pedidos_factura; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE pedidos_factura (
+    id integer NOT NULL,
+    nro_factura integer NOT NULL,
+    fecha date NOT NULL,
+    cliente_id integer,
+    anulado boolean NOT NULL
+);
+
+
+ALTER TABLE pedidos_factura OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 149443)
+-- Name: pedidos_factura_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE pedidos_factura_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE pedidos_factura_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2727 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: pedidos_factura_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE pedidos_factura_id_seq OWNED BY pedidos_factura.id;
+
+
+--
+-- TOC entry 215 (class 1259 OID 149472)
+-- Name: seguimiento_actividadescultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_actividadescultivo (
+    id integer NOT NULL,
+    fecha_realizacion timestamp with time zone NOT NULL,
+    actividad integer NOT NULL,
+    observacion text NOT NULL,
+    cultivo_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_actividadescultivo OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 149470)
+-- Name: seguimiento_actividadescultivo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_actividadescultivo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_actividadescultivo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2728 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: seguimiento_actividadescultivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_actividadescultivo_id_seq OWNED BY seguimiento_actividadescultivo.id;
+
+
+--
+-- TOC entry 217 (class 1259 OID 149483)
+-- Name: seguimiento_crecimientocultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_crecimientocultivo (
+    id integer NOT NULL,
+    medida double precision NOT NULL,
+    unidad integer NOT NULL,
+    fecha_registro date NOT NULL,
+    observaciones text NOT NULL,
+    muestra_cultivo_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_crecimientocultivo OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 149481)
+-- Name: seguimiento_crecimientocultivo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_crecimientocultivo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_crecimientocultivo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2729 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: seguimiento_crecimientocultivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_crecimientocultivo_id_seq OWNED BY seguimiento_crecimientocultivo.id;
+
+
+--
+-- TOC entry 219 (class 1259 OID 149494)
+-- Name: seguimiento_cultivomuestra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_cultivomuestra (
+    id integer NOT NULL,
+    codigo character varying(255) NOT NULL,
+    ubicacion character varying(255) NOT NULL,
+    fecha_registro date NOT NULL,
+    cultivo_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_cultivomuestra OWNER TO postgres;
+
+--
+-- TOC entry 218 (class 1259 OID 149492)
+-- Name: seguimiento_cultivomuestra_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_cultivomuestra_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_cultivomuestra_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2730 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: seguimiento_cultivomuestra_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_cultivomuestra_id_seq OWNED BY seguimiento_cultivomuestra.id;
+
+
+--
+-- TOC entry 221 (class 1259 OID 149505)
+-- Name: seguimiento_fertilizante; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_fertilizante (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    codigo character varying(255) NOT NULL,
+    proovedor_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_fertilizante OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 149503)
+-- Name: seguimiento_fertilizante_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_fertilizante_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_fertilizante_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2731 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: seguimiento_fertilizante_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_fertilizante_id_seq OWNED BY seguimiento_fertilizante.id;
+
+
+--
+-- TOC entry 223 (class 1259 OID 149516)
+-- Name: seguimiento_fertilizantecultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_fertilizantecultivo (
+    id integer NOT NULL,
+    fecha_aplicacion date NOT NULL,
+    observaciones text NOT NULL,
+    cultivo_id integer NOT NULL,
+    fertilizante_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_fertilizantecultivo OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 149514)
+-- Name: seguimiento_fertilizantecultivo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_fertilizantecultivo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_fertilizantecultivo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2732 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: seguimiento_fertilizantecultivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_fertilizantecultivo_id_seq OWNED BY seguimiento_fertilizantecultivo.id;
+
+
+--
+-- TOC entry 225 (class 1259 OID 149527)
+-- Name: seguimiento_plaga; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_plaga (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    descripcion text NOT NULL,
+    imagen character varying(255) NOT NULL
+);
+
+
+ALTER TABLE seguimiento_plaga OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 149525)
+-- Name: seguimiento_plaga_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_plaga_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_plaga_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2733 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: seguimiento_plaga_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_plaga_id_seq OWNED BY seguimiento_plaga.id;
+
+
+--
+-- TOC entry 227 (class 1259 OID 149538)
+-- Name: seguimiento_plagascultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_plagascultivo (
+    id integer NOT NULL,
+    fecha_aparacion date NOT NULL,
+    imagen character varying(255) NOT NULL,
+    plaga_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_plagascultivo OWNER TO postgres;
+
+--
+-- TOC entry 226 (class 1259 OID 149536)
+-- Name: seguimiento_plagascultivo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_plagascultivo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_plagascultivo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2734 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: seguimiento_plagascultivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_plagascultivo_id_seq OWNED BY seguimiento_plagascultivo.id;
+
+
+--
+-- TOC entry 229 (class 1259 OID 149546)
+-- Name: seguimiento_seguimientocultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE seguimiento_seguimientocultivo (
+    id integer NOT NULL,
+    observaciones text NOT NULL,
+    fecha_registro date NOT NULL,
+    cultivo_id integer NOT NULL
+);
+
+
+ALTER TABLE seguimiento_seguimientocultivo OWNER TO postgres;
+
+--
+-- TOC entry 228 (class 1259 OID 149544)
+-- Name: seguimiento_seguimientocultivo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE seguimiento_seguimientocultivo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE seguimiento_seguimientocultivo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2735 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: seguimiento_seguimientocultivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE seguimiento_seguimientocultivo_id_seq OWNED BY seguimiento_seguimientocultivo.id;
+
+
+--
+-- TOC entry 191 (class 1259 OID 149254)
+-- Name: siembras_categoria; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_categoria (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    descripcion character varying(255)
+);
+
+
+ALTER TABLE siembras_categoria OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 149252)
+-- Name: siembras_categoria_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_categoria_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_categoria_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2736 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: siembras_categoria_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_categoria_id_seq OWNED BY siembras_categoria.id;
+
+
+--
+-- TOC entry 203 (class 1259 OID 149361)
+-- Name: siembras_cultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_cultivo (
+    id integer NOT NULL,
+    codigo character varying(255) NOT NULL,
+    fecha_siembra date,
+    posicion_inicial integer NOT NULL,
+    posicion_final integer NOT NULL,
+    densidad_siembra double precision NOT NULL,
+    invernadero_id integer,
+    lote_id integer NOT NULL,
+    parcela_id integer
+);
+
+
+ALTER TABLE siembras_cultivo OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 149359)
+-- Name: siembras_cultivo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_cultivo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_cultivo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2737 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: siembras_cultivo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_cultivo_id_seq OWNED BY siembras_cultivo.id;
+
+
+--
+-- TOC entry 205 (class 1259 OID 149369)
+-- Name: siembras_invernadero; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_invernadero (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    ubicacion character varying(255) NOT NULL,
+    codigo character varying(255) NOT NULL,
+    capacidad integer NOT NULL
+);
+
+
+ALTER TABLE siembras_invernadero OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 149367)
+-- Name: siembras_invernadero_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_invernadero_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_invernadero_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2738 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: siembras_invernadero_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_invernadero_id_seq OWNED BY siembras_invernadero.id;
+
+
+--
+-- TOC entry 207 (class 1259 OID 149382)
+-- Name: siembras_lotesiembra; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_lotesiembra (
+    id integer NOT NULL,
+    cantidad double precision NOT NULL,
+    fecha_enviado date,
+    fecha_recibido date,
+    germinado boolean NOT NULL,
+    proovedor_id integer,
+    semilla_utilizada_id integer NOT NULL
+);
+
+
+ALTER TABLE siembras_lotesiembra OWNER TO postgres;
+
+--
+-- TOC entry 206 (class 1259 OID 149380)
+-- Name: siembras_lotesiembra_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_lotesiembra_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_lotesiembra_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2739 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: siembras_lotesiembra_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_lotesiembra_id_seq OWNED BY siembras_lotesiembra.id;
+
+
+--
+-- TOC entry 193 (class 1259 OID 149273)
+-- Name: siembras_parcela; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_parcela (
+    id integer NOT NULL,
+    ubicacion character varying(255) NOT NULL,
+    codigo character varying(255) NOT NULL,
+    tipo_id integer NOT NULL
+);
+
+
+ALTER TABLE siembras_parcela OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 149271)
+-- Name: siembras_parcela_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_parcela_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_parcela_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2740 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: siembras_parcela_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_parcela_id_seq OWNED BY siembras_parcela.id;
+
+
+--
+-- TOC entry 195 (class 1259 OID 149284)
+-- Name: siembras_proovedor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_proovedor (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    descripcion character varying(255) NOT NULL,
+    telefono character varying(255) NOT NULL,
+    direccion character varying(255) NOT NULL,
+    categoria_id integer NOT NULL
+);
+
+
+ALTER TABLE siembras_proovedor OWNER TO postgres;
+
+--
+-- TOC entry 194 (class 1259 OID 149282)
+-- Name: siembras_proovedor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_proovedor_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_proovedor_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2741 (class 0 OID 0)
+-- Dependencies: 194
+-- Name: siembras_proovedor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_proovedor_id_seq OWNED BY siembras_proovedor.id;
+
+
+--
+-- TOC entry 197 (class 1259 OID 149295)
+-- Name: siembras_rubro; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_rubro (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL
+);
+
+
+ALTER TABLE siembras_rubro OWNER TO postgres;
+
+--
+-- TOC entry 196 (class 1259 OID 149293)
+-- Name: siembras_rubro_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_rubro_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_rubro_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2742 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: siembras_rubro_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_rubro_id_seq OWNED BY siembras_rubro.id;
+
+
+--
+-- TOC entry 199 (class 1259 OID 149303)
+-- Name: siembras_semilla; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_semilla (
+    id integer NOT NULL,
+    descripcion character varying(255) NOT NULL,
+    fecha_compra date NOT NULL,
+    precio_compra double precision NOT NULL,
+    cantidad double precision NOT NULL,
+    unidad integer NOT NULL,
+    codigo character varying(255) NOT NULL,
+    nivel_germinacion double precision NOT NULL,
+    familia_id integer NOT NULL,
+    proovedor_id integer NOT NULL
+);
+
+
+ALTER TABLE siembras_semilla OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 149301)
+-- Name: siembras_semilla_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_semilla_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_semilla_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2743 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: siembras_semilla_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_semilla_id_seq OWNED BY siembras_semilla.id;
+
+
+--
+-- TOC entry 201 (class 1259 OID 149314)
+-- Name: siembras_tipoparcela; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE siembras_tipoparcela (
+    id integer NOT NULL,
+    nombre character varying(255) NOT NULL,
+    descripcion character varying(255) NOT NULL
+);
+
+
+ALTER TABLE siembras_tipoparcela OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 149312)
+-- Name: siembras_tipoparcela_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE siembras_tipoparcela_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE siembras_tipoparcela_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2744 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: siembras_tipoparcela_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE siembras_tipoparcela_id_seq OWNED BY siembras_tipoparcela.id;
+
+
+--
+-- TOC entry 232 (class 1259 OID 149615)
+-- Name: suelos_analisissuelo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE suelos_analisissuelo (
+    id integer NOT NULL,
+    codigo character varying(255) NOT NULL,
+    fecha_registro date NOT NULL,
+    fecha_aplicacion date NOT NULL,
+    muestra_id integer NOT NULL
+);
+
+
+ALTER TABLE suelos_analisissuelo OWNER TO postgres;
+
+--
+-- TOC entry 231 (class 1259 OID 149613)
+-- Name: suelos_analisissuelo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE suelos_analisissuelo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE suelos_analisissuelo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2745 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: suelos_analisissuelo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE suelos_analisissuelo_id_seq OWNED BY suelos_analisissuelo.id;
+
+
+--
+-- TOC entry 234 (class 1259 OID 149623)
+-- Name: suelos_muestrasuelo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE suelos_muestrasuelo (
+    id integer NOT NULL,
+    codigo character varying(255) NOT NULL,
+    ubicacion character varying(255) NOT NULL,
+    fecha_registro date NOT NULL,
+    invernadero_id integer,
+    parcela_id integer
+);
+
+
+ALTER TABLE suelos_muestrasuelo OWNER TO postgres;
+
+--
+-- TOC entry 233 (class 1259 OID 149621)
+-- Name: suelos_muestrasuelo_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE suelos_muestrasuelo_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE suelos_muestrasuelo_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 2746 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: suelos_muestrasuelo_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE suelos_muestrasuelo_id_seq OWNED BY suelos_muestrasuelo.id;
+
+
+--
+-- TOC entry 2352 (class 2604 OID 149136)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group ALTER COLUMN id SET DEFAULT nextval('auth_group_id_seq'::regclass);
+
+
+--
+-- TOC entry 2353 (class 2604 OID 149146)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions ALTER COLUMN id SET DEFAULT nextval('auth_group_permissions_id_seq'::regclass);
+
+
+--
+-- TOC entry 2351 (class 2604 OID 149128)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission ALTER COLUMN id SET DEFAULT nextval('auth_permission_id_seq'::regclass);
+
+
+--
+-- TOC entry 2354 (class 2604 OID 149154)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user ALTER COLUMN id SET DEFAULT nextval('auth_user_id_seq'::regclass);
+
+
+--
+-- TOC entry 2355 (class 2604 OID 149164)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups ALTER COLUMN id SET DEFAULT nextval('auth_user_groups_id_seq'::regclass);
+
+
+--
+-- TOC entry 2356 (class 2604 OID 149172)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions ALTER COLUMN id SET DEFAULT nextval('auth_user_user_permissions_id_seq'::regclass);
+
+
+--
+-- TOC entry 2357 (class 2604 OID 149232)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log ALTER COLUMN id SET DEFAULT nextval('django_admin_log_id_seq'::regclass);
+
+
+--
+-- TOC entry 2350 (class 2604 OID 149118)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_content_type ALTER COLUMN id SET DEFAULT nextval('django_content_type_id_seq'::regclass);
+
+
+--
+-- TOC entry 2349 (class 2604 OID 149107)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_migrations ALTER COLUMN id SET DEFAULT nextval('django_migrations_id_seq'::regclass);
+
+
+--
+-- TOC entry 2368 (class 2604 OID 149427)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pedidos_cliente ALTER COLUMN id SET DEFAULT nextval('pedidos_cliente_id_seq'::regclass);
+
+
+--
+-- TOC entry 2369 (class 2604 OID 149440)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pedidos_detallefactura ALTER COLUMN id SET DEFAULT nextval('pedidos_detallefactura_id_seq'::regclass);
+
+
+--
+-- TOC entry 2370 (class 2604 OID 149448)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pedidos_factura ALTER COLUMN id SET DEFAULT nextval('pedidos_factura_id_seq'::regclass);
+
+
+--
+-- TOC entry 2371 (class 2604 OID 149475)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_actividadescultivo ALTER COLUMN id SET DEFAULT nextval('seguimiento_actividadescultivo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2372 (class 2604 OID 149486)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_crecimientocultivo ALTER COLUMN id SET DEFAULT nextval('seguimiento_crecimientocultivo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2373 (class 2604 OID 149497)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_cultivomuestra ALTER COLUMN id SET DEFAULT nextval('seguimiento_cultivomuestra_id_seq'::regclass);
+
+
+--
+-- TOC entry 2374 (class 2604 OID 149508)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_fertilizante ALTER COLUMN id SET DEFAULT nextval('seguimiento_fertilizante_id_seq'::regclass);
+
+
+--
+-- TOC entry 2375 (class 2604 OID 149519)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_fertilizantecultivo ALTER COLUMN id SET DEFAULT nextval('seguimiento_fertilizantecultivo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2376 (class 2604 OID 149530)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_plaga ALTER COLUMN id SET DEFAULT nextval('seguimiento_plaga_id_seq'::regclass);
+
+
+--
+-- TOC entry 2377 (class 2604 OID 149541)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_plagascultivo ALTER COLUMN id SET DEFAULT nextval('seguimiento_plagascultivo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2378 (class 2604 OID 149549)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_seguimientocultivo ALTER COLUMN id SET DEFAULT nextval('seguimiento_seguimientocultivo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2359 (class 2604 OID 149257)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_categoria ALTER COLUMN id SET DEFAULT nextval('siembras_categoria_id_seq'::regclass);
+
+
+--
+-- TOC entry 2365 (class 2604 OID 149364)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_cultivo ALTER COLUMN id SET DEFAULT nextval('siembras_cultivo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2366 (class 2604 OID 149372)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_invernadero ALTER COLUMN id SET DEFAULT nextval('siembras_invernadero_id_seq'::regclass);
+
+
+--
+-- TOC entry 2367 (class 2604 OID 149385)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_lotesiembra ALTER COLUMN id SET DEFAULT nextval('siembras_lotesiembra_id_seq'::regclass);
+
+
+--
+-- TOC entry 2360 (class 2604 OID 149276)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_parcela ALTER COLUMN id SET DEFAULT nextval('siembras_parcela_id_seq'::regclass);
+
+
+--
+-- TOC entry 2361 (class 2604 OID 149287)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_proovedor ALTER COLUMN id SET DEFAULT nextval('siembras_proovedor_id_seq'::regclass);
+
+
+--
+-- TOC entry 2362 (class 2604 OID 149298)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_rubro ALTER COLUMN id SET DEFAULT nextval('siembras_rubro_id_seq'::regclass);
+
+
+--
+-- TOC entry 2363 (class 2604 OID 149306)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_semilla ALTER COLUMN id SET DEFAULT nextval('siembras_semilla_id_seq'::regclass);
+
+
+--
+-- TOC entry 2364 (class 2604 OID 149317)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_tipoparcela ALTER COLUMN id SET DEFAULT nextval('siembras_tipoparcela_id_seq'::regclass);
+
+
+--
+-- TOC entry 2379 (class 2604 OID 149618)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY suelos_analisissuelo ALTER COLUMN id SET DEFAULT nextval('suelos_analisissuelo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2380 (class 2604 OID 149626)
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY suelos_muestrasuelo ALTER COLUMN id SET DEFAULT nextval('suelos_muestrasuelo_id_seq'::regclass);
+
+
+--
+-- TOC entry 2652 (class 0 OID 149133)
+-- Dependencies: 179
+-- Data for Name: auth_group; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2747 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: auth_group_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_group_id_seq', 1, false);
+
+
+--
+-- TOC entry 2654 (class 0 OID 149143)
+-- Dependencies: 181
+-- Data for Name: auth_group_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2748 (class 0 OID 0)
+-- Dependencies: 180
+-- Name: auth_group_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_group_permissions_id_seq', 1, false);
+
+
+--
+-- TOC entry 2650 (class 0 OID 149125)
+-- Dependencies: 177
+-- Data for Name: auth_permission; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO auth_permission VALUES (1, 'Can add log entry', 1, 'add_logentry');
+INSERT INTO auth_permission VALUES (2, 'Can change log entry', 1, 'change_logentry');
+INSERT INTO auth_permission VALUES (3, 'Can delete log entry', 1, 'delete_logentry');
+INSERT INTO auth_permission VALUES (4, 'Can add permission', 2, 'add_permission');
+INSERT INTO auth_permission VALUES (5, 'Can change permission', 2, 'change_permission');
+INSERT INTO auth_permission VALUES (6, 'Can delete permission', 2, 'delete_permission');
+INSERT INTO auth_permission VALUES (7, 'Can add group', 3, 'add_group');
+INSERT INTO auth_permission VALUES (8, 'Can change group', 3, 'change_group');
+INSERT INTO auth_permission VALUES (9, 'Can delete group', 3, 'delete_group');
+INSERT INTO auth_permission VALUES (10, 'Can add user', 4, 'add_user');
+INSERT INTO auth_permission VALUES (11, 'Can change user', 4, 'change_user');
+INSERT INTO auth_permission VALUES (12, 'Can delete user', 4, 'delete_user');
+INSERT INTO auth_permission VALUES (13, 'Can add content type', 5, 'add_contenttype');
+INSERT INTO auth_permission VALUES (14, 'Can change content type', 5, 'change_contenttype');
+INSERT INTO auth_permission VALUES (15, 'Can delete content type', 5, 'delete_contenttype');
+INSERT INTO auth_permission VALUES (16, 'Can add session', 6, 'add_session');
+INSERT INTO auth_permission VALUES (17, 'Can change session', 6, 'change_session');
+INSERT INTO auth_permission VALUES (18, 'Can delete session', 6, 'delete_session');
+INSERT INTO auth_permission VALUES (19, 'Can add categoria', 7, 'add_categoria');
+INSERT INTO auth_permission VALUES (20, 'Can change categoria', 7, 'change_categoria');
+INSERT INTO auth_permission VALUES (21, 'Can delete categoria', 7, 'delete_categoria');
+INSERT INTO auth_permission VALUES (22, 'Can add rubro', 8, 'add_rubro');
+INSERT INTO auth_permission VALUES (23, 'Can change rubro', 8, 'change_rubro');
+INSERT INTO auth_permission VALUES (24, 'Can delete rubro', 8, 'delete_rubro');
+INSERT INTO auth_permission VALUES (25, 'Can add proovedor', 9, 'add_proovedor');
+INSERT INTO auth_permission VALUES (26, 'Can change proovedor', 9, 'change_proovedor');
+INSERT INTO auth_permission VALUES (27, 'Can delete proovedor', 9, 'delete_proovedor');
+INSERT INTO auth_permission VALUES (28, 'Can add semilla', 10, 'add_semilla');
+INSERT INTO auth_permission VALUES (29, 'Can change semilla', 10, 'change_semilla');
+INSERT INTO auth_permission VALUES (30, 'Can delete semilla', 10, 'delete_semilla');
+INSERT INTO auth_permission VALUES (31, 'Can add tipo parcela', 11, 'add_tipoparcela');
+INSERT INTO auth_permission VALUES (32, 'Can change tipo parcela', 11, 'change_tipoparcela');
+INSERT INTO auth_permission VALUES (33, 'Can delete tipo parcela', 11, 'delete_tipoparcela');
+INSERT INTO auth_permission VALUES (34, 'Can add parcela', 12, 'add_parcela');
+INSERT INTO auth_permission VALUES (35, 'Can change parcela', 12, 'change_parcela');
+INSERT INTO auth_permission VALUES (36, 'Can delete parcela', 12, 'delete_parcela');
+INSERT INTO auth_permission VALUES (37, 'Can add invernadero', 13, 'add_invernadero');
+INSERT INTO auth_permission VALUES (38, 'Can change invernadero', 13, 'change_invernadero');
+INSERT INTO auth_permission VALUES (39, 'Can delete invernadero', 13, 'delete_invernadero');
+INSERT INTO auth_permission VALUES (40, 'Can add lote siembra', 14, 'add_lotesiembra');
+INSERT INTO auth_permission VALUES (41, 'Can change lote siembra', 14, 'change_lotesiembra');
+INSERT INTO auth_permission VALUES (42, 'Can delete lote siembra', 14, 'delete_lotesiembra');
+INSERT INTO auth_permission VALUES (43, 'Can add cultivo', 15, 'add_cultivo');
+INSERT INTO auth_permission VALUES (44, 'Can change cultivo', 15, 'change_cultivo');
+INSERT INTO auth_permission VALUES (45, 'Can delete cultivo', 15, 'delete_cultivo');
+INSERT INTO auth_permission VALUES (46, 'Can add muestra suelo', 16, 'add_muestrasuelo');
+INSERT INTO auth_permission VALUES (47, 'Can change muestra suelo', 16, 'change_muestrasuelo');
+INSERT INTO auth_permission VALUES (48, 'Can delete muestra suelo', 16, 'delete_muestrasuelo');
+INSERT INTO auth_permission VALUES (49, 'Can add analisis suelo', 17, 'add_analisissuelo');
+INSERT INTO auth_permission VALUES (50, 'Can change analisis suelo', 17, 'change_analisissuelo');
+INSERT INTO auth_permission VALUES (51, 'Can delete analisis suelo', 17, 'delete_analisissuelo');
+INSERT INTO auth_permission VALUES (52, 'Can add seguimiento cultivo', 18, 'add_seguimientocultivo');
+INSERT INTO auth_permission VALUES (53, 'Can change seguimiento cultivo', 18, 'change_seguimientocultivo');
+INSERT INTO auth_permission VALUES (54, 'Can delete seguimiento cultivo', 18, 'delete_seguimientocultivo');
+INSERT INTO auth_permission VALUES (55, 'Can add actividades cultivo', 19, 'add_actividadescultivo');
+INSERT INTO auth_permission VALUES (56, 'Can change actividades cultivo', 19, 'change_actividadescultivo');
+INSERT INTO auth_permission VALUES (57, 'Can delete actividades cultivo', 19, 'delete_actividadescultivo');
+INSERT INTO auth_permission VALUES (58, 'Can add cultivo muestra', 20, 'add_cultivomuestra');
+INSERT INTO auth_permission VALUES (59, 'Can change cultivo muestra', 20, 'change_cultivomuestra');
+INSERT INTO auth_permission VALUES (60, 'Can delete cultivo muestra', 20, 'delete_cultivomuestra');
+INSERT INTO auth_permission VALUES (61, 'Can add crecimiento cultivo', 21, 'add_crecimientocultivo');
+INSERT INTO auth_permission VALUES (62, 'Can change crecimiento cultivo', 21, 'change_crecimientocultivo');
+INSERT INTO auth_permission VALUES (63, 'Can delete crecimiento cultivo', 21, 'delete_crecimientocultivo');
+INSERT INTO auth_permission VALUES (64, 'Can add plaga', 22, 'add_plaga');
+INSERT INTO auth_permission VALUES (65, 'Can change plaga', 22, 'change_plaga');
+INSERT INTO auth_permission VALUES (66, 'Can delete plaga', 22, 'delete_plaga');
+INSERT INTO auth_permission VALUES (67, 'Can add plagas cultivo', 23, 'add_plagascultivo');
+INSERT INTO auth_permission VALUES (68, 'Can change plagas cultivo', 23, 'change_plagascultivo');
+INSERT INTO auth_permission VALUES (69, 'Can delete plagas cultivo', 23, 'delete_plagascultivo');
+INSERT INTO auth_permission VALUES (70, 'Can add fertilizante', 24, 'add_fertilizante');
+INSERT INTO auth_permission VALUES (71, 'Can change fertilizante', 24, 'change_fertilizante');
+INSERT INTO auth_permission VALUES (72, 'Can delete fertilizante', 24, 'delete_fertilizante');
+INSERT INTO auth_permission VALUES (73, 'Can add fertilizante cultivo', 25, 'add_fertilizantecultivo');
+INSERT INTO auth_permission VALUES (74, 'Can change fertilizante cultivo', 25, 'change_fertilizantecultivo');
+INSERT INTO auth_permission VALUES (75, 'Can delete fertilizante cultivo', 25, 'delete_fertilizantecultivo');
+INSERT INTO auth_permission VALUES (76, 'Can add cliente', 26, 'add_cliente');
+INSERT INTO auth_permission VALUES (77, 'Can change cliente', 26, 'change_cliente');
+INSERT INTO auth_permission VALUES (78, 'Can delete cliente', 26, 'delete_cliente');
+INSERT INTO auth_permission VALUES (79, 'Can add factura', 27, 'add_factura');
+INSERT INTO auth_permission VALUES (80, 'Can change factura', 27, 'change_factura');
+INSERT INTO auth_permission VALUES (81, 'Can delete factura', 27, 'delete_factura');
+INSERT INTO auth_permission VALUES (82, 'Can add detalle factura', 28, 'add_detallefactura');
+INSERT INTO auth_permission VALUES (83, 'Can change detalle factura', 28, 'change_detallefactura');
+INSERT INTO auth_permission VALUES (84, 'Can delete detalle factura', 28, 'delete_detallefactura');
+
+
+--
+-- TOC entry 2749 (class 0 OID 0)
+-- Dependencies: 176
+-- Name: auth_permission_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_permission_id_seq', 84, true);
+
+
+--
+-- TOC entry 2656 (class 0 OID 149151)
+-- Dependencies: 183
+-- Data for Name: auth_user; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO auth_user VALUES (2, 'pbkdf2_sha256$24000$9ZCNNuU0Hv9W$iQlxoRv8BsquM3ZESsmOExJxUkubfyNj4BZlp0L+YkU=', '2016-08-02 18:27:31.731264-04:30', true, 'say', '', '', '', true, true, '2016-08-02 18:25:39.772714-04:30');
+INSERT INTO auth_user VALUES (1, 'pbkdf2_sha256$24000$cqFIfmG4S0Hg$Tar4uU6Ychc59r57uYUjlTGDkc18Inx2y4uJv9R7BME=', '2016-08-02 18:37:03.196364-04:30', true, 'ronsuez', '', '', '', true, true, '2016-08-02 18:20:22.789665-04:30');
+
+
+--
+-- TOC entry 2658 (class 0 OID 149161)
+-- Dependencies: 185
+-- Data for Name: auth_user_groups; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2750 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: auth_user_groups_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_groups_id_seq', 1, false);
+
+
+--
+-- TOC entry 2751 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: auth_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_id_seq', 2, true);
+
+
+--
+-- TOC entry 2660 (class 0 OID 149169)
+-- Dependencies: 187
+-- Data for Name: auth_user_user_permissions; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2752 (class 0 OID 0)
+-- Dependencies: 186
+-- Name: auth_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('auth_user_user_permissions_id_seq', 1, false);
+
+
+--
+-- TOC entry 2662 (class 0 OID 149229)
+-- Dependencies: 189
+-- Data for Name: django_admin_log; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO django_admin_log VALUES (1, '2016-08-02 18:21:22.045673-04:30', '1', 'Diana Garrido', 1, 'Added.', 26, 1);
+INSERT INTO django_admin_log VALUES (2, '2016-08-02 18:21:28.16077-04:30', '6', 'Zanahorias ', 1, 'Added.', 8, 1);
+INSERT INTO django_admin_log VALUES (3, '2016-08-02 18:21:47.040263-04:30', '7', 'Rucula ', 1, 'Added.', 8, 1);
+INSERT INTO django_admin_log VALUES (4, '2016-08-02 18:21:56.606665-04:30', '8', 'Papas ', 1, 'Added.', 8, 1);
+INSERT INTO django_admin_log VALUES (5, '2016-08-02 18:22:04.931861-04:30', '9', 'Rabanos ', 1, 'Added.', 8, 1);
+INSERT INTO django_admin_log VALUES (6, '2016-08-02 18:22:27.889419-04:30', '1', 'Factura object', 1, 'Added. Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object".', 27, 1);
+INSERT INTO django_admin_log VALUES (7, '2016-08-02 18:30:03.730857-04:30', '2', 'Maria Valentina Inglesis', 1, 'Added.', 26, 2);
+INSERT INTO django_admin_log VALUES (8, '2016-08-02 18:30:21.239476-04:30', '10', 'Acelga ', 1, 'Added.', 8, 2);
+INSERT INTO django_admin_log VALUES (9, '2016-08-02 18:31:34.032517-04:30', '11', 'Nabos ', 1, 'Added.', 8, 2);
+INSERT INTO django_admin_log VALUES (10, '2016-08-02 18:32:03.166279-04:30', '12', 'Cilantro ', 1, 'Added.', 8, 2);
+INSERT INTO django_admin_log VALUES (11, '2016-08-02 18:33:11.634881-04:30', '13', 'Albahaca ', 1, 'Added.', 8, 2);
+INSERT INTO django_admin_log VALUES (12, '2016-08-02 18:34:30.771509-04:30', '14', 'Coliflor ', 1, 'Added.', 8, 2);
+INSERT INTO django_admin_log VALUES (13, '2016-08-02 18:34:55.367456-04:30', '2', 'Factura 2', 1, 'Added. Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object".', 27, 2);
+INSERT INTO django_admin_log VALUES (14, '2016-08-02 18:46:50.381298-04:30', '3', 'Argenis Castillo', 1, 'Added.', 26, 2);
+INSERT INTO django_admin_log VALUES (15, '2016-08-02 18:49:52.936023-04:30', '3', 'Factura 3', 1, 'Added. Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object".', 27, 2);
+INSERT INTO django_admin_log VALUES (16, '2016-08-02 18:50:13.162105-04:30', '3', 'Factura 3', 2, 'Changed anulado.', 27, 2);
+INSERT INTO django_admin_log VALUES (17, '2016-08-02 18:56:41.167124-04:30', '3', 'Factura 3', 2, 'Changed unidad for detalle factura "DetalleFactura object".', 27, 2);
+INSERT INTO django_admin_log VALUES (18, '2016-08-02 19:11:43.338023-04:30', '4', 'PAU Lácteos Sta. Rosa Ac', 1, 'Added.', 26, 2);
+INSERT INTO django_admin_log VALUES (19, '2016-08-02 19:13:32.951597-04:30', '4', 'Factura 4', 1, 'Added. Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object". Added detalle factura "DetalleFactura object".', 27, 2);
+
+
+--
+-- TOC entry 2753 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: django_admin_log_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_admin_log_id_seq', 19, true);
+
+
+--
+-- TOC entry 2648 (class 0 OID 149115)
+-- Dependencies: 175
+-- Data for Name: django_content_type; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO django_content_type VALUES (1, 'admin', 'logentry');
+INSERT INTO django_content_type VALUES (2, 'auth', 'permission');
+INSERT INTO django_content_type VALUES (3, 'auth', 'group');
+INSERT INTO django_content_type VALUES (4, 'auth', 'user');
+INSERT INTO django_content_type VALUES (5, 'contenttypes', 'contenttype');
+INSERT INTO django_content_type VALUES (6, 'sessions', 'session');
+INSERT INTO django_content_type VALUES (7, 'siembras', 'categoria');
+INSERT INTO django_content_type VALUES (8, 'siembras', 'rubro');
+INSERT INTO django_content_type VALUES (9, 'siembras', 'proovedor');
+INSERT INTO django_content_type VALUES (10, 'siembras', 'semilla');
+INSERT INTO django_content_type VALUES (11, 'siembras', 'tipoparcela');
+INSERT INTO django_content_type VALUES (12, 'siembras', 'parcela');
+INSERT INTO django_content_type VALUES (13, 'siembras', 'invernadero');
+INSERT INTO django_content_type VALUES (14, 'siembras', 'lotesiembra');
+INSERT INTO django_content_type VALUES (15, 'siembras', 'cultivo');
+INSERT INTO django_content_type VALUES (16, 'suelos', 'muestrasuelo');
+INSERT INTO django_content_type VALUES (17, 'suelos', 'analisissuelo');
+INSERT INTO django_content_type VALUES (18, 'seguimiento', 'seguimientocultivo');
+INSERT INTO django_content_type VALUES (19, 'seguimiento', 'actividadescultivo');
+INSERT INTO django_content_type VALUES (20, 'seguimiento', 'cultivomuestra');
+INSERT INTO django_content_type VALUES (21, 'seguimiento', 'crecimientocultivo');
+INSERT INTO django_content_type VALUES (22, 'seguimiento', 'plaga');
+INSERT INTO django_content_type VALUES (23, 'seguimiento', 'plagascultivo');
+INSERT INTO django_content_type VALUES (24, 'seguimiento', 'fertilizante');
+INSERT INTO django_content_type VALUES (25, 'seguimiento', 'fertilizantecultivo');
+INSERT INTO django_content_type VALUES (26, 'pedidos', 'cliente');
+INSERT INTO django_content_type VALUES (27, 'pedidos', 'factura');
+INSERT INTO django_content_type VALUES (28, 'pedidos', 'detallefactura');
+
+
+--
+-- TOC entry 2754 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: django_content_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_content_type_id_seq', 28, true);
+
+
+--
+-- TOC entry 2646 (class 0 OID 149104)
+-- Dependencies: 173
+-- Data for Name: django_migrations; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO django_migrations VALUES (1, 'contenttypes', '0001_initial', '2016-08-02 18:19:26.270324-04:30');
+INSERT INTO django_migrations VALUES (2, 'auth', '0001_initial', '2016-08-02 18:19:26.362689-04:30');
+INSERT INTO django_migrations VALUES (3, 'admin', '0001_initial', '2016-08-02 18:19:26.417058-04:30');
+INSERT INTO django_migrations VALUES (4, 'admin', '0002_logentry_remove_auto_add', '2016-08-02 18:19:26.437704-04:30');
+INSERT INTO django_migrations VALUES (5, 'contenttypes', '0002_remove_content_type_name', '2016-08-02 18:19:26.481002-04:30');
+INSERT INTO django_migrations VALUES (6, 'auth', '0002_alter_permission_name_max_length', '2016-08-02 18:19:26.496818-04:30');
+INSERT INTO django_migrations VALUES (7, 'auth', '0003_alter_user_email_max_length', '2016-08-02 18:19:26.509689-04:30');
+INSERT INTO django_migrations VALUES (8, 'auth', '0004_alter_user_username_opts', '2016-08-02 18:19:26.526417-04:30');
+INSERT INTO django_migrations VALUES (9, 'auth', '0005_alter_user_last_login_null', '2016-08-02 18:19:26.539858-04:30');
+INSERT INTO django_migrations VALUES (10, 'auth', '0006_require_contenttypes_0002', '2016-08-02 18:19:26.542791-04:30');
+INSERT INTO django_migrations VALUES (11, 'auth', '0007_alter_validators_add_error_messages', '2016-08-02 18:19:26.5564-04:30');
+INSERT INTO django_migrations VALUES (12, 'siembras', '0001_initial', '2016-08-02 18:19:26.670059-04:30');
+INSERT INTO django_migrations VALUES (13, 'siembras', '0002_auto_20160802_2243', '2016-08-02 18:19:26.911086-04:30');
+INSERT INTO django_migrations VALUES (14, 'pedidos', '0001_initial', '2016-08-02 18:19:26.986056-04:30');
+INSERT INTO django_migrations VALUES (15, 'seguimiento', '0001_initial', '2016-08-02 18:19:27.222961-04:30');
+INSERT INTO django_migrations VALUES (16, 'sessions', '0001_initial', '2016-08-02 18:19:27.239105-04:30');
+INSERT INTO django_migrations VALUES (17, 'suelos', '0001_initial', '2016-08-02 18:19:27.329273-04:30');
+INSERT INTO django_migrations VALUES (18, 'pedidos', '0002_auto_20160802_2254', '2016-08-02 18:24:34.142362-04:30');
+INSERT INTO django_migrations VALUES (19, 'pedidos', '0003_auto_20160802_2308', '2016-08-02 18:38:51.49009-04:30');
+INSERT INTO django_migrations VALUES (20, 'pedidos', '0004_auto_20160802_2309', '2016-08-02 18:39:57.647491-04:30');
+INSERT INTO django_migrations VALUES (21, 'pedidos', '0005_auto_20160802_2310', '2016-08-02 18:40:37.685356-04:30');
+
+
+--
+-- TOC entry 2755 (class 0 OID 0)
+-- Dependencies: 172
+-- Name: django_migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('django_migrations_id_seq', 21, true);
+
+
+--
+-- TOC entry 2703 (class 0 OID 149603)
+-- Dependencies: 230
+-- Data for Name: django_session; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO django_session VALUES ('ow0jtyerlexzfh6f7d4fix5384j094wd', 'ZDk1MTY2ZmU3NWJmMGVkNmFmZWY1MWYwNjYxNWVhMDJlNjlmNWQ3ZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImI4MmE1OTc1ZGQxMjliZThjMTU1NDczMGE0N2IyNGM4ODNhZGNhOWYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=', '2016-08-16 18:20:41.827384-04:30');
+INSERT INTO django_session VALUES ('9zgwl4kvv1cgzl6vg3h8j5vqnxg729os', 'NWU2NjUxZWQ4ZGQ4ZGZkZDRlZTgwOTg2YmRjYzZhYzRlN2ZmNjk5Zjp7Il9hdXRoX3VzZXJfaGFzaCI6IjFiMmQ1ZTFjNzZmNGU4ZDU1N2E3N2EzOWJjMmNiMjA4OWE3NWQxYzgiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIyIn0=', '2016-08-16 18:27:31.73365-04:30');
+INSERT INTO django_session VALUES ('rcvg6cp1f42we93stasc55ta7wppryvw', 'ZDk1MTY2ZmU3NWJmMGVkNmFmZWY1MWYwNjYxNWVhMDJlNjlmNWQ3ZTp7Il9hdXRoX3VzZXJfaGFzaCI6ImI4MmE1OTc1ZGQxMjliZThjMTU1NDczMGE0N2IyNGM4ODNhZGNhOWYiLCJfYXV0aF91c2VyX2JhY2tlbmQiOiJkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZCIsIl9hdXRoX3VzZXJfaWQiOiIxIn0=', '2016-08-16 18:37:03.198513-04:30');
+
+
+--
+-- TOC entry 2682 (class 0 OID 149424)
+-- Dependencies: 209
+-- Data for Name: pedidos_cliente; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO pedidos_cliente VALUES (1, 'Diana', 'Garrido', 'Merida', '02746571315', '', 'V-15366844');
+INSERT INTO pedidos_cliente VALUES (2, 'Maria Valentina', 'Inglesis', 'Mérida', '04147453071', '', '8035695');
+INSERT INTO pedidos_cliente VALUES (3, 'Argenis', 'Castillo', 'Mérida', '04161361431', '', '11953854');
+INSERT INTO pedidos_cliente VALUES (4, 'PAU Lácteos', 'Sta. Rosa Ac', 'Merida', '', '', 'j-31005286-7');
+
+
+--
+-- TOC entry 2756 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: pedidos_cliente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pedidos_cliente_id_seq', 4, true);
+
+
+--
+-- TOC entry 2684 (class 0 OID 149437)
+-- Dependencies: 211
+-- Data for Name: pedidos_detallefactura; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO pedidos_detallefactura VALUES (1, 30.5, 2, 0, 1, 6);
+INSERT INTO pedidos_detallefactura VALUES (2, 3.75, 2, 0, 1, 7);
+INSERT INTO pedidos_detallefactura VALUES (3, 6, 2, 0, 1, 8);
+INSERT INTO pedidos_detallefactura VALUES (4, 5.5, 2, 0, 1, 9);
+INSERT INTO pedidos_detallefactura VALUES (5, 12, 2, 100, 2, 10);
+INSERT INTO pedidos_detallefactura VALUES (6, 8, 2, 100, 2, 7);
+INSERT INTO pedidos_detallefactura VALUES (7, 14, 2, 75, 2, 6);
+INSERT INTO pedidos_detallefactura VALUES (8, 9, 2, 75, 2, 11);
+INSERT INTO pedidos_detallefactura VALUES (9, 1, 2, 100, 2, 12);
+INSERT INTO pedidos_detallefactura VALUES (10, 6, 2, 130, 2, 8);
+INSERT INTO pedidos_detallefactura VALUES (11, 1, 2, 300, 2, 13);
+INSERT INTO pedidos_detallefactura VALUES (12, 60, 1, 12.5, 2, 5);
+INSERT INTO pedidos_detallefactura VALUES (13, 25, 1, 30, 2, 14);
+INSERT INTO pedidos_detallefactura VALUES (14, 16, 2, 60, 3, 10);
+INSERT INTO pedidos_detallefactura VALUES (15, 13, 2, 50, 3, 6);
+INSERT INTO pedidos_detallefactura VALUES (16, 5, 2, 50, 3, 9);
+INSERT INTO pedidos_detallefactura VALUES (17, 2, 2, 80, 3, 5);
+INSERT INTO pedidos_detallefactura VALUES (18, 17, 6, 45, 3, 9);
+INSERT INTO pedidos_detallefactura VALUES (19, 125, 6, 45, 4, 10);
+INSERT INTO pedidos_detallefactura VALUES (20, 38, 6, 45, 4, 9);
+INSERT INTO pedidos_detallefactura VALUES (21, 150, 6, 20, 4, 14);
+
+
+--
+-- TOC entry 2757 (class 0 OID 0)
+-- Dependencies: 210
+-- Name: pedidos_detallefactura_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pedidos_detallefactura_id_seq', 21, true);
+
+
+--
+-- TOC entry 2686 (class 0 OID 149445)
+-- Dependencies: 213
+-- Data for Name: pedidos_factura; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO pedidos_factura VALUES (1, 1, '2015-12-02', 1, false);
+INSERT INTO pedidos_factura VALUES (2, 2, '2015-12-03', 2, false);
+INSERT INTO pedidos_factura VALUES (3, 3, '2015-12-02', 3, false);
+INSERT INTO pedidos_factura VALUES (4, 4, '2015-12-03', 4, true);
+
+
+--
+-- TOC entry 2758 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: pedidos_factura_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('pedidos_factura_id_seq', 4, true);
+
+
+--
+-- TOC entry 2688 (class 0 OID 149472)
+-- Dependencies: 215
+-- Data for Name: seguimiento_actividadescultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO seguimiento_actividadescultivo VALUES (1, '2016-08-01 15:05:01-04:30', 1, 'Se realizo el desmalezamiento de el cultivo', 1);
+
+
+--
+-- TOC entry 2759 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: seguimiento_actividadescultivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_actividadescultivo_id_seq', 1, true);
+
+
+--
+-- TOC entry 2690 (class 0 OID 149483)
+-- Dependencies: 217
+-- Data for Name: seguimiento_crecimientocultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO seguimiento_crecimientocultivo VALUES (1, 1.19999999999999996, 1, '2016-08-01', '1ra medida', 1);
+INSERT INTO seguimiento_crecimientocultivo VALUES (2, 0, 1, '2016-08-02', 'SE ACABA DE SEMBRAR', 3);
+INSERT INTO seguimiento_crecimientocultivo VALUES (3, 2, 1, '2016-08-02', 'CRECIO DOS CENTIMETROS', 3);
+
+
+--
+-- TOC entry 2760 (class 0 OID 0)
+-- Dependencies: 216
+-- Name: seguimiento_crecimientocultivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_crecimientocultivo_id_seq', 3, true);
+
+
+--
+-- TOC entry 2692 (class 0 OID 149494)
+-- Dependencies: 219
+-- Data for Name: seguimiento_cultivomuestra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO seguimiento_cultivomuestra VALUES (1, 'C-HT-01-M01', '1-A1', '2016-08-01', 1);
+INSERT INTO seguimiento_cultivomuestra VALUES (2, 'C-HT-01-M02', '1-A2', '2016-08-01', 1);
+INSERT INTO seguimiento_cultivomuestra VALUES (3, 'C1-1A1', 'Hacienda El Cinaro', '2016-08-02', 2);
+
+
+--
+-- TOC entry 2761 (class 0 OID 0)
+-- Dependencies: 218
+-- Name: seguimiento_cultivomuestra_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_cultivomuestra_id_seq', 3, true);
+
+
+--
+-- TOC entry 2694 (class 0 OID 149505)
+-- Dependencies: 221
+-- Data for Name: seguimiento_fertilizante; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO seguimiento_fertilizante VALUES (1, 'Glifosato', '', 6);
+
+
+--
+-- TOC entry 2762 (class 0 OID 0)
+-- Dependencies: 220
+-- Name: seguimiento_fertilizante_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_fertilizante_id_seq', 1, true);
+
+
+--
+-- TOC entry 2696 (class 0 OID 149516)
+-- Dependencies: 223
+-- Data for Name: seguimiento_fertilizantecultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO seguimiento_fertilizantecultivo VALUES (1, '2016-08-01', 'los matare a todos!!!', 1, 1);
+INSERT INTO seguimiento_fertilizantecultivo VALUES (2, '2016-08-02', 'SE APLICO ESE FERTILIZANTE', 2, 1);
+
+
+--
+-- TOC entry 2763 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: seguimiento_fertilizantecultivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_fertilizantecultivo_id_seq', 2, true);
+
+
+--
+-- TOC entry 2698 (class 0 OID 149527)
+-- Dependencies: 225
+-- Data for Name: seguimiento_plaga; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2764 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: seguimiento_plaga_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_plaga_id_seq', 1, false);
+
+
+--
+-- TOC entry 2700 (class 0 OID 149538)
+-- Dependencies: 227
+-- Data for Name: seguimiento_plagascultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2765 (class 0 OID 0)
+-- Dependencies: 226
+-- Name: seguimiento_plagascultivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_plagascultivo_id_seq', 1, false);
+
+
+--
+-- TOC entry 2702 (class 0 OID 149546)
+-- Dependencies: 229
+-- Data for Name: seguimiento_seguimientocultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+
+
+--
+-- TOC entry 2766 (class 0 OID 0)
+-- Dependencies: 228
+-- Name: seguimiento_seguimientocultivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('seguimiento_seguimientocultivo_id_seq', 1, false);
+
+
+--
+-- TOC entry 2664 (class 0 OID 149254)
+-- Dependencies: 191
+-- Data for Name: siembras_categoria; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_categoria VALUES (4, 'Semillas', '');
+INSERT INTO siembras_categoria VALUES (5, 'Germinacion', '');
+INSERT INTO siembras_categoria VALUES (6, 'Fertilizantes', '');
+
+
+--
+-- TOC entry 2767 (class 0 OID 0)
+-- Dependencies: 190
+-- Name: siembras_categoria_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_categoria_id_seq', 6, true);
+
+
+--
+-- TOC entry 2676 (class 0 OID 149361)
+-- Dependencies: 203
+-- Data for Name: siembras_cultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_cultivo VALUES (1, 'HT-01', NULL, 1, 100, 3, 4, 1, NULL);
+INSERT INTO siembras_cultivo VALUES (2, 'Calabacines', '2016-08-01', 1, 52, 50, 5, 3, NULL);
+INSERT INTO siembras_cultivo VALUES (3, 'Calabacines', '2016-08-01', 53, 104, 50, 5, 4, NULL);
+INSERT INTO siembras_cultivo VALUES (4, 'Calabacines', '2016-08-01', 105, 156, 50, 5, 5, NULL);
+INSERT INTO siembras_cultivo VALUES (5, 'Calabacines', '2016-08-01', 157, 175, 50, 5, 4, NULL);
+INSERT INTO siembras_cultivo VALUES (6, 'Calabacines', '2016-08-01', 176, 192, 50, 5, 3, NULL);
+INSERT INTO siembras_cultivo VALUES (7, 'Calabacines', '2016-08-01', 193, 208, 50, 5, 5, NULL);
+
+
+--
+-- TOC entry 2768 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: siembras_cultivo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_cultivo_id_seq', 7, true);
+
+
+--
+-- TOC entry 2678 (class 0 OID 149369)
+-- Dependencies: 205
+-- Data for Name: siembras_invernadero; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_invernadero VALUES (4, 'Invernadero 1', 'Hacienda El Cinaro', 'I-01', 500);
+INSERT INTO siembras_invernadero VALUES (5, 'Terraza 1', 'Hacienda El Cinaro', 'T-1', 500);
+
+
+--
+-- TOC entry 2769 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: siembras_invernadero_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_invernadero_id_seq', 5, true);
+
+
+--
+-- TOC entry 2680 (class 0 OID 149382)
+-- Dependencies: 207
+-- Data for Name: siembras_lotesiembra; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_lotesiembra VALUES (1, 20, '2016-06-01', '2016-07-19', true, 5, 3);
+INSERT INTO siembras_lotesiembra VALUES (3, 69, NULL, NULL, false, NULL, 5);
+INSERT INTO siembras_lotesiembra VALUES (4, 70, NULL, NULL, false, NULL, 6);
+INSERT INTO siembras_lotesiembra VALUES (5, 69, NULL, NULL, false, NULL, 7);
+
+
+--
+-- TOC entry 2770 (class 0 OID 0)
+-- Dependencies: 206
+-- Name: siembras_lotesiembra_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_lotesiembra_id_seq', 5, true);
+
+
+--
+-- TOC entry 2666 (class 0 OID 149273)
+-- Dependencies: 193
+-- Data for Name: siembras_parcela; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_parcela VALUES (2, 'Parcela 1 - Finca El Cinaro', 'P-01', 3);
+
+
+--
+-- TOC entry 2771 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: siembras_parcela_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_parcela_id_seq', 2, true);
+
+
+--
+-- TOC entry 2668 (class 0 OID 149284)
+-- Dependencies: 195
+-- Data for Name: siembras_proovedor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_proovedor VALUES (4, 'Stokes', '', '', '', 4);
+INSERT INTO siembras_proovedor VALUES (5, 'Germinados de Luis', '', '', '', 5);
+INSERT INTO siembras_proovedor VALUES (6, 'Monsanto', '', '', '', 6);
+INSERT INTO siembras_proovedor VALUES (7, 'Willians Dam Seeds', '', '', 'Canada', 4);
+INSERT INTO siembras_proovedor VALUES (8, 'Artesanal', 'Semillas generadas en finca', '', 'Venezuela', 4);
+
+
+--
+-- TOC entry 2772 (class 0 OID 0)
+-- Dependencies: 194
+-- Name: siembras_proovedor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_proovedor_id_seq', 8, true);
+
+
+--
+-- TOC entry 2670 (class 0 OID 149295)
+-- Dependencies: 197
+-- Data for Name: siembras_rubro; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_rubro VALUES (3, 'Tomates');
+INSERT INTO siembras_rubro VALUES (4, 'Pepinos');
+INSERT INTO siembras_rubro VALUES (5, 'Calabacines');
+INSERT INTO siembras_rubro VALUES (6, 'Zanahorias');
+INSERT INTO siembras_rubro VALUES (7, 'Rucula');
+INSERT INTO siembras_rubro VALUES (8, 'Papas');
+INSERT INTO siembras_rubro VALUES (9, 'Rabanos');
+INSERT INTO siembras_rubro VALUES (10, 'Acelga');
+INSERT INTO siembras_rubro VALUES (11, 'Nabos');
+INSERT INTO siembras_rubro VALUES (12, 'Cilantro');
+INSERT INTO siembras_rubro VALUES (13, 'Albahaca');
+INSERT INTO siembras_rubro VALUES (14, 'Coliflor');
+
+
+--
+-- TOC entry 2773 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: siembras_rubro_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_rubro_id_seq', 14, true);
+
+
+--
+-- TOC entry 2672 (class 0 OID 149303)
+-- Dependencies: 199
+-- Data for Name: siembras_semilla; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_semilla VALUES (3, 'Hybrid Tomato Big Beef VFNT', '2016-08-01', 8.5, 100, 2, '', 0.900000000000000022, 3, 4);
+INSERT INTO siembras_semilla VALUES (4, 'Pepino Hybrido Puccini', '2016-08-01', 2.5, 2000, 2, '', 0.900000000000000022, 4, 4);
+INSERT INTO siembras_semilla VALUES (5, 'Calabacin Spineless Beauty, Verde', '2015-04-23', 1, 100, 1, '297F', 0.939999999999999947, 5, 4);
+INSERT INTO siembras_semilla VALUES (6, 'Calabacin Gold Rush, Amarillo', '2015-04-23', 1, 100, 1, '298B', 0.939999999999999947, 5, 4);
+INSERT INTO siembras_semilla VALUES (7, 'Calabacin Semilla Criolla, Blanca', '2015-04-23', 1, 100, 1, 'Criolla', 0.949999999999999956, 5, 8);
+
+
+--
+-- TOC entry 2774 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: siembras_semilla_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_semilla_id_seq', 7, true);
+
+
+--
+-- TOC entry 2674 (class 0 OID 149314)
+-- Dependencies: 201
+-- Data for Name: siembras_tipoparcela; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO siembras_tipoparcela VALUES (3, 'Parcela', 'Cielo Abierto');
+
+
+--
+-- TOC entry 2775 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: siembras_tipoparcela_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('siembras_tipoparcela_id_seq', 3, true);
+
+
+--
+-- TOC entry 2705 (class 0 OID 149615)
+-- Dependencies: 232
+-- Data for Name: suelos_analisissuelo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO suelos_analisissuelo VALUES (1, '1', '2016-08-01', '2016-08-01', 1);
+
+
+--
+-- TOC entry 2776 (class 0 OID 0)
+-- Dependencies: 231
+-- Name: suelos_analisissuelo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('suelos_analisissuelo_id_seq', 1, true);
+
+
+--
+-- TOC entry 2707 (class 0 OID 149623)
+-- Dependencies: 234
+-- Data for Name: suelos_muestrasuelo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO suelos_muestrasuelo VALUES (1, '1', '1-A1', '2016-08-01', 4, NULL);
+
+
+--
+-- TOC entry 2777 (class 0 OID 0)
+-- Dependencies: 233
+-- Name: suelos_muestrasuelo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('suelos_muestrasuelo_id_seq', 1, true);
+
+
+--
+-- TOC entry 2394 (class 2606 OID 149140)
+-- Name: auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_name_key UNIQUE (name);
+
+
+--
+-- TOC entry 2400 (class 2606 OID 149195)
+-- Name: auth_group_permissions_group_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_0cd325b0_uniq UNIQUE (group_id, permission_id);
+
+
+--
+-- TOC entry 2402 (class 2606 OID 149148)
+-- Name: auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2396 (class 2606 OID 149138)
+-- Name: auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_group
+    ADD CONSTRAINT auth_group_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2389 (class 2606 OID 149181)
+-- Name: auth_permission_content_type_id_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_content_type_id_01ab375a_uniq UNIQUE (content_type_id, codename);
+
+
+--
+-- TOC entry 2391 (class 2606 OID 149130)
+-- Name: auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permission_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2411 (class 2606 OID 149166)
+-- Name: auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2413 (class 2606 OID 149210)
+-- Name: auth_user_groups_user_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_94350c0c_uniq UNIQUE (user_id, group_id);
+
+
+--
+-- TOC entry 2404 (class 2606 OID 149156)
+-- Name: auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2417 (class 2606 OID 149174)
+-- Name: auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2419 (class 2606 OID 149224)
+-- Name: auth_user_user_permissions_user_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_14a6b632_uniq UNIQUE (user_id, permission_id);
+
+
+--
+-- TOC entry 2407 (class 2606 OID 149158)
+-- Name: auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY auth_user
+    ADD CONSTRAINT auth_user_username_key UNIQUE (username);
+
+
+--
+-- TOC entry 2423 (class 2606 OID 149238)
+-- Name: django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2384 (class 2606 OID 149122)
+-- Name: django_content_type_app_label_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_app_label_76bd3d3b_uniq UNIQUE (app_label, model);
+
+
+--
+-- TOC entry 2386 (class 2606 OID 149120)
+-- Name: django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_content_type
+    ADD CONSTRAINT django_content_type_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2382 (class 2606 OID 149112)
+-- Name: django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_migrations
+    ADD CONSTRAINT django_migrations_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2495 (class 2606 OID 149610)
+-- Name: django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY django_session
+    ADD CONSTRAINT django_session_pkey PRIMARY KEY (session_key);
+
+
+--
+-- TOC entry 2459 (class 2606 OID 149434)
+-- Name: pedidos_cliente_identification_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pedidos_cliente
+    ADD CONSTRAINT pedidos_cliente_identification_key UNIQUE (identification);
+
+
+--
+-- TOC entry 2461 (class 2606 OID 149432)
+-- Name: pedidos_cliente_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pedidos_cliente
+    ADD CONSTRAINT pedidos_cliente_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2465 (class 2606 OID 149442)
+-- Name: pedidos_detallefactura_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pedidos_detallefactura
+    ADD CONSTRAINT pedidos_detallefactura_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2468 (class 2606 OID 149450)
+-- Name: pedidos_factura_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY pedidos_factura
+    ADD CONSTRAINT pedidos_factura_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2471 (class 2606 OID 149480)
+-- Name: seguimiento_actividadescultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_actividadescultivo
+    ADD CONSTRAINT seguimiento_actividadescultivo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2474 (class 2606 OID 149491)
+-- Name: seguimiento_crecimientocultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_crecimientocultivo
+    ADD CONSTRAINT seguimiento_crecimientocultivo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2477 (class 2606 OID 149502)
+-- Name: seguimiento_cultivomuestra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_cultivomuestra
+    ADD CONSTRAINT seguimiento_cultivomuestra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2480 (class 2606 OID 149513)
+-- Name: seguimiento_fertilizante_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_fertilizante
+    ADD CONSTRAINT seguimiento_fertilizante_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2484 (class 2606 OID 149524)
+-- Name: seguimiento_fertilizantecultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_fertilizantecultivo
+    ADD CONSTRAINT seguimiento_fertilizantecultivo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2486 (class 2606 OID 149535)
+-- Name: seguimiento_plaga_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_plaga
+    ADD CONSTRAINT seguimiento_plaga_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2489 (class 2606 OID 149543)
+-- Name: seguimiento_plagascultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_plagascultivo
+    ADD CONSTRAINT seguimiento_plagascultivo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2492 (class 2606 OID 149554)
+-- Name: seguimiento_seguimientocultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY seguimiento_seguimientocultivo
+    ADD CONSTRAINT seguimiento_seguimientocultivo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2425 (class 2606 OID 149262)
+-- Name: siembras_categoria_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_categoria
+    ADD CONSTRAINT siembras_categoria_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2447 (class 2606 OID 149366)
+-- Name: siembras_cultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_cultivo
+    ADD CONSTRAINT siembras_cultivo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2450 (class 2606 OID 149379)
+-- Name: siembras_invernadero_codigo_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_invernadero
+    ADD CONSTRAINT siembras_invernadero_codigo_key UNIQUE (codigo);
+
+
+--
+-- TOC entry 2452 (class 2606 OID 149377)
+-- Name: siembras_invernadero_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_invernadero
+    ADD CONSTRAINT siembras_invernadero_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2456 (class 2606 OID 149387)
+-- Name: siembras_lotesiembra_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_lotesiembra
+    ADD CONSTRAINT siembras_lotesiembra_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2428 (class 2606 OID 149281)
+-- Name: siembras_parcela_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_parcela
+    ADD CONSTRAINT siembras_parcela_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2431 (class 2606 OID 149292)
+-- Name: siembras_proovedor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_proovedor
+    ADD CONSTRAINT siembras_proovedor_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2434 (class 2606 OID 149389)
+-- Name: siembras_rubro_nombre_67618225_uniq; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_rubro
+    ADD CONSTRAINT siembras_rubro_nombre_67618225_uniq UNIQUE (nombre);
+
+
+--
+-- TOC entry 2436 (class 2606 OID 149300)
+-- Name: siembras_rubro_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_rubro
+    ADD CONSTRAINT siembras_rubro_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2440 (class 2606 OID 149311)
+-- Name: siembras_semilla_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_semilla
+    ADD CONSTRAINT siembras_semilla_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2442 (class 2606 OID 149322)
+-- Name: siembras_tipoparcela_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY siembras_tipoparcela
+    ADD CONSTRAINT siembras_tipoparcela_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2499 (class 2606 OID 149620)
+-- Name: suelos_analisissuelo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY suelos_analisissuelo
+    ADD CONSTRAINT suelos_analisissuelo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2503 (class 2606 OID 149631)
+-- Name: suelos_muestrasuelo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY suelos_muestrasuelo
+    ADD CONSTRAINT suelos_muestrasuelo_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2392 (class 1259 OID 149183)
+-- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_name_a6ea08ec_like ON auth_group USING btree (name varchar_pattern_ops);
+
+
+--
+-- TOC entry 2397 (class 1259 OID 149196)
+-- Name: auth_group_permissions_0e939a4f; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_0e939a4f ON auth_group_permissions USING btree (group_id);
+
+
+--
+-- TOC entry 2398 (class 1259 OID 149197)
+-- Name: auth_group_permissions_8373b171; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_group_permissions_8373b171 ON auth_group_permissions USING btree (permission_id);
+
+
+--
+-- TOC entry 2387 (class 1259 OID 149182)
+-- Name: auth_permission_417f1b1c; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_permission_417f1b1c ON auth_permission USING btree (content_type_id);
+
+
+--
+-- TOC entry 2408 (class 1259 OID 149212)
+-- Name: auth_user_groups_0e939a4f; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_0e939a4f ON auth_user_groups USING btree (group_id);
+
+
+--
+-- TOC entry 2409 (class 1259 OID 149211)
+-- Name: auth_user_groups_e8701ad4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_groups_e8701ad4 ON auth_user_groups USING btree (user_id);
+
+
+--
+-- TOC entry 2414 (class 1259 OID 149226)
+-- Name: auth_user_user_permissions_8373b171; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_8373b171 ON auth_user_user_permissions USING btree (permission_id);
+
+
+--
+-- TOC entry 2415 (class 1259 OID 149225)
+-- Name: auth_user_user_permissions_e8701ad4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_user_permissions_e8701ad4 ON auth_user_user_permissions USING btree (user_id);
+
+
+--
+-- TOC entry 2405 (class 1259 OID 149198)
+-- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX auth_user_username_6821ab7c_like ON auth_user USING btree (username varchar_pattern_ops);
+
+
+--
+-- TOC entry 2420 (class 1259 OID 149249)
+-- Name: django_admin_log_417f1b1c; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_417f1b1c ON django_admin_log USING btree (content_type_id);
+
+
+--
+-- TOC entry 2421 (class 1259 OID 149250)
+-- Name: django_admin_log_e8701ad4; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_admin_log_e8701ad4 ON django_admin_log USING btree (user_id);
+
+
+--
+-- TOC entry 2493 (class 1259 OID 149611)
+-- Name: django_session_de54fa62; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_session_de54fa62 ON django_session USING btree (expire_date);
+
+
+--
+-- TOC entry 2496 (class 1259 OID 149612)
+-- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX django_session_session_key_c0390e0f_like ON django_session USING btree (session_key varchar_pattern_ops);
+
+
+--
+-- TOC entry 2457 (class 1259 OID 149451)
+-- Name: pedidos_cliente_identification_0bf97a9b_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX pedidos_cliente_identification_0bf97a9b_like ON pedidos_cliente USING btree (identification varchar_pattern_ops);
+
+
+--
+-- TOC entry 2462 (class 1259 OID 149464)
+-- Name: pedidos_detallefactura_1a6ebb11; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX pedidos_detallefactura_1a6ebb11 ON pedidos_detallefactura USING btree (rubro_id);
+
+
+--
+-- TOC entry 2463 (class 1259 OID 149458)
+-- Name: pedidos_detallefactura_b2945002; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX pedidos_detallefactura_b2945002 ON pedidos_detallefactura USING btree (factura_id);
+
+
+--
+-- TOC entry 2466 (class 1259 OID 149457)
+-- Name: pedidos_factura_4a860110; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX pedidos_factura_4a860110 ON pedidos_factura USING btree (cliente_id);
+
+
+--
+-- TOC entry 2469 (class 1259 OID 149560)
+-- Name: seguimiento_actividadescultivo_1657c8b9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_actividadescultivo_1657c8b9 ON seguimiento_actividadescultivo USING btree (cultivo_id);
+
+
+--
+-- TOC entry 2472 (class 1259 OID 149597)
+-- Name: seguimiento_crecimientocultivo_941caca3; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_crecimientocultivo_941caca3 ON seguimiento_crecimientocultivo USING btree (muestra_cultivo_id);
+
+
+--
+-- TOC entry 2475 (class 1259 OID 149566)
+-- Name: seguimiento_cultivomuestra_1657c8b9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_cultivomuestra_1657c8b9 ON seguimiento_cultivomuestra USING btree (cultivo_id);
+
+
+--
+-- TOC entry 2478 (class 1259 OID 149572)
+-- Name: seguimiento_fertilizante_1a5f1c58; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_fertilizante_1a5f1c58 ON seguimiento_fertilizante USING btree (proovedor_id);
+
+
+--
+-- TOC entry 2481 (class 1259 OID 149583)
+-- Name: seguimiento_fertilizantecultivo_1657c8b9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_fertilizantecultivo_1657c8b9 ON seguimiento_fertilizantecultivo USING btree (cultivo_id);
+
+
+--
+-- TOC entry 2482 (class 1259 OID 149584)
+-- Name: seguimiento_fertilizantecultivo_e0e94b30; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_fertilizantecultivo_e0e94b30 ON seguimiento_fertilizantecultivo USING btree (fertilizante_id);
+
+
+--
+-- TOC entry 2487 (class 1259 OID 149590)
+-- Name: seguimiento_plagascultivo_42b1567b; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_plagascultivo_42b1567b ON seguimiento_plagascultivo USING btree (plaga_id);
+
+
+--
+-- TOC entry 2490 (class 1259 OID 149596)
+-- Name: seguimiento_seguimientocultivo_1657c8b9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX seguimiento_seguimientocultivo_1657c8b9 ON seguimiento_seguimientocultivo USING btree (cultivo_id);
+
+
+--
+-- TOC entry 2443 (class 1259 OID 149404)
+-- Name: siembras_cultivo_153eb5d9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_cultivo_153eb5d9 ON siembras_cultivo USING btree (invernadero_id);
+
+
+--
+-- TOC entry 2444 (class 1259 OID 149416)
+-- Name: siembras_cultivo_5d745209; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_cultivo_5d745209 ON siembras_cultivo USING btree (parcela_id);
+
+
+--
+-- TOC entry 2445 (class 1259 OID 149410)
+-- Name: siembras_cultivo_d0ea3e58; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_cultivo_d0ea3e58 ON siembras_cultivo USING btree (lote_id);
+
+
+--
+-- TOC entry 2448 (class 1259 OID 149391)
+-- Name: siembras_invernadero_codigo_11c77475_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_invernadero_codigo_11c77475_like ON siembras_invernadero USING btree (codigo varchar_pattern_ops);
+
+
+--
+-- TOC entry 2453 (class 1259 OID 149402)
+-- Name: siembras_lotesiembra_1a5f1c58; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_lotesiembra_1a5f1c58 ON siembras_lotesiembra USING btree (proovedor_id);
+
+
+--
+-- TOC entry 2454 (class 1259 OID 149403)
+-- Name: siembras_lotesiembra_c3cbcbaf; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_lotesiembra_c3cbcbaf ON siembras_lotesiembra USING btree (semilla_utilizada_id);
+
+
+--
+-- TOC entry 2426 (class 1259 OID 149341)
+-- Name: siembras_parcela_d3c0c18a; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_parcela_d3c0c18a ON siembras_parcela USING btree (tipo_id);
+
+
+--
+-- TOC entry 2429 (class 1259 OID 149328)
+-- Name: siembras_proovedor_daf3833b; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_proovedor_daf3833b ON siembras_proovedor USING btree (categoria_id);
+
+
+--
+-- TOC entry 2432 (class 1259 OID 149390)
+-- Name: siembras_rubro_nombre_67618225_like; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_rubro_nombre_67618225_like ON siembras_rubro USING btree (nombre varchar_pattern_ops);
+
+
+--
+-- TOC entry 2437 (class 1259 OID 149340)
+-- Name: siembras_semilla_1a5f1c58; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_semilla_1a5f1c58 ON siembras_semilla USING btree (proovedor_id);
+
+
+--
+-- TOC entry 2438 (class 1259 OID 149339)
+-- Name: siembras_semilla_3006e344; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX siembras_semilla_3006e344 ON siembras_semilla USING btree (familia_id);
+
+
+--
+-- TOC entry 2497 (class 1259 OID 149644)
+-- Name: suelos_analisissuelo_f21dd60f; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX suelos_analisissuelo_f21dd60f ON suelos_analisissuelo USING btree (muestra_id);
+
+
+--
+-- TOC entry 2500 (class 1259 OID 149642)
+-- Name: suelos_muestrasuelo_153eb5d9; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX suelos_muestrasuelo_153eb5d9 ON suelos_muestrasuelo USING btree (invernadero_id);
+
+
+--
+-- TOC entry 2501 (class 1259 OID 149643)
+-- Name: suelos_muestrasuelo_5d745209; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX suelos_muestrasuelo_5d745209 ON suelos_muestrasuelo USING btree (parcela_id);
+
+
+--
+-- TOC entry 2506 (class 2606 OID 149189)
+-- Name: auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permiss_permission_id_84c5c92e_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2505 (class 2606 OID 149184)
+-- Name: auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_group_permissions
+    ADD CONSTRAINT auth_group_permissions_group_id_b120cbf9_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2504 (class 2606 OID 149175)
+-- Name: auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_permission
+    ADD CONSTRAINT auth_permiss_content_type_id_2f476e4b_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2508 (class 2606 OID 149204)
+-- Name: auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_group_id_97559544_fk_auth_group_id FOREIGN KEY (group_id) REFERENCES auth_group(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2507 (class 2606 OID 149199)
+-- Name: auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_groups
+    ADD CONSTRAINT auth_user_groups_user_id_6a12ed8b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2510 (class 2606 OID 149218)
+-- Name: auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_per_permission_id_1fbb5f2c_fk_auth_permission_id FOREIGN KEY (permission_id) REFERENCES auth_permission(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2509 (class 2606 OID 149213)
+-- Name: auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY auth_user_user_permissions
+    ADD CONSTRAINT auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2511 (class 2606 OID 149239)
+-- Name: django_admin_content_type_id_c4bce8eb_fk_django_content_type_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_content_type_id_c4bce8eb_fk_django_content_type_id FOREIGN KEY (content_type_id) REFERENCES django_content_type(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2512 (class 2606 OID 149244)
+-- Name: django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY django_admin_log
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_auth_user_id FOREIGN KEY (user_id) REFERENCES auth_user(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2522 (class 2606 OID 149459)
+-- Name: pedidos_detallefactur_factura_id_4b071e8e_fk_pedidos_factura_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pedidos_detallefactura
+    ADD CONSTRAINT pedidos_detallefactur_factura_id_4b071e8e_fk_pedidos_factura_id FOREIGN KEY (factura_id) REFERENCES pedidos_factura(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2523 (class 2606 OID 149465)
+-- Name: pedidos_detallefactura_rubro_id_ce701518_fk_siembras_rubro_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pedidos_detallefactura
+    ADD CONSTRAINT pedidos_detallefactura_rubro_id_ce701518_fk_siembras_rubro_id FOREIGN KEY (rubro_id) REFERENCES siembras_rubro(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2524 (class 2606 OID 149657)
+-- Name: pedidos_factura_cliente_id_af30521a_fk_pedidos_cliente_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY pedidos_factura
+    ADD CONSTRAINT pedidos_factura_cliente_id_af30521a_fk_pedidos_cliente_id FOREIGN KEY (cliente_id) REFERENCES pedidos_cliente(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2526 (class 2606 OID 149598)
+-- Name: se_muestra_cultivo_id_14d02a53_fk_seguimiento_cultivomuestra_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_crecimientocultivo
+    ADD CONSTRAINT se_muestra_cultivo_id_14d02a53_fk_seguimiento_cultivomuestra_id FOREIGN KEY (muestra_cultivo_id) REFERENCES seguimiento_cultivomuestra(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2530 (class 2606 OID 149578)
+-- Name: seguimi_fertilizante_id_8247ae67_fk_seguimiento_fertilizante_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_fertilizantecultivo
+    ADD CONSTRAINT seguimi_fertilizante_id_8247ae67_fk_seguimiento_fertilizante_id FOREIGN KEY (fertilizante_id) REFERENCES seguimiento_fertilizante(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2525 (class 2606 OID 149555)
+-- Name: seguimiento_activida_cultivo_id_5bb67837_fk_siembras_cultivo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_actividadescultivo
+    ADD CONSTRAINT seguimiento_activida_cultivo_id_5bb67837_fk_siembras_cultivo_id FOREIGN KEY (cultivo_id) REFERENCES siembras_cultivo(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2527 (class 2606 OID 149561)
+-- Name: seguimiento_cultivom_cultivo_id_9cf2cc45_fk_siembras_cultivo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_cultivomuestra
+    ADD CONSTRAINT seguimiento_cultivom_cultivo_id_9cf2cc45_fk_siembras_cultivo_id FOREIGN KEY (cultivo_id) REFERENCES siembras_cultivo(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2528 (class 2606 OID 149567)
+-- Name: seguimiento_fert_proovedor_id_5c315148_fk_siembras_proovedor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_fertilizante
+    ADD CONSTRAINT seguimiento_fert_proovedor_id_5c315148_fk_siembras_proovedor_id FOREIGN KEY (proovedor_id) REFERENCES siembras_proovedor(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2529 (class 2606 OID 149573)
+-- Name: seguimiento_fertiliz_cultivo_id_6ce3bd65_fk_siembras_cultivo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_fertilizantecultivo
+    ADD CONSTRAINT seguimiento_fertiliz_cultivo_id_6ce3bd65_fk_siembras_cultivo_id FOREIGN KEY (cultivo_id) REFERENCES siembras_cultivo(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2531 (class 2606 OID 149585)
+-- Name: seguimiento_plagascul_plaga_id_91ee39a5_fk_seguimiento_plaga_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_plagascultivo
+    ADD CONSTRAINT seguimiento_plagascul_plaga_id_91ee39a5_fk_seguimiento_plaga_id FOREIGN KEY (plaga_id) REFERENCES seguimiento_plaga(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2532 (class 2606 OID 149591)
+-- Name: seguimiento_seguimie_cultivo_id_501e988d_fk_siembras_cultivo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY seguimiento_seguimientocultivo
+    ADD CONSTRAINT seguimiento_seguimie_cultivo_id_501e988d_fk_siembras_cultivo_id FOREIGN KEY (cultivo_id) REFERENCES siembras_cultivo(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2517 (class 2606 OID 149405)
+-- Name: siembras_cul_invernadero_id_0c7488e4_fk_siembras_invernadero_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_cultivo
+    ADD CONSTRAINT siembras_cul_invernadero_id_0c7488e4_fk_siembras_invernadero_id FOREIGN KEY (invernadero_id) REFERENCES siembras_invernadero(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2518 (class 2606 OID 149411)
+-- Name: siembras_cultivo_lote_id_a443677f_fk_siembras_lotesiembra_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_cultivo
+    ADD CONSTRAINT siembras_cultivo_lote_id_a443677f_fk_siembras_lotesiembra_id FOREIGN KEY (lote_id) REFERENCES siembras_lotesiembra(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2519 (class 2606 OID 149417)
+-- Name: siembras_cultivo_parcela_id_f6105ed1_fk_siembras_parcela_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_cultivo
+    ADD CONSTRAINT siembras_cultivo_parcela_id_f6105ed1_fk_siembras_parcela_id FOREIGN KEY (parcela_id) REFERENCES siembras_parcela(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2521 (class 2606 OID 149397)
+-- Name: siembras_l_semilla_utilizada_id_ddfca079_fk_siembras_semilla_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_lotesiembra
+    ADD CONSTRAINT siembras_l_semilla_utilizada_id_ddfca079_fk_siembras_semilla_id FOREIGN KEY (semilla_utilizada_id) REFERENCES siembras_semilla(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2520 (class 2606 OID 149392)
+-- Name: siembras_lotesie_proovedor_id_b8eca661_fk_siembras_proovedor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_lotesiembra
+    ADD CONSTRAINT siembras_lotesie_proovedor_id_b8eca661_fk_siembras_proovedor_id FOREIGN KEY (proovedor_id) REFERENCES siembras_proovedor(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2513 (class 2606 OID 149342)
+-- Name: siembras_parcela_tipo_id_4f6fe510_fk_siembras_tipoparcela_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_parcela
+    ADD CONSTRAINT siembras_parcela_tipo_id_4f6fe510_fk_siembras_tipoparcela_id FOREIGN KEY (tipo_id) REFERENCES siembras_tipoparcela(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2514 (class 2606 OID 149323)
+-- Name: siembras_prooved_categoria_id_1146c9d4_fk_siembras_categoria_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_proovedor
+    ADD CONSTRAINT siembras_prooved_categoria_id_1146c9d4_fk_siembras_categoria_id FOREIGN KEY (categoria_id) REFERENCES siembras_categoria(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2515 (class 2606 OID 149329)
+-- Name: siembras_semilla_familia_id_17ef80a8_fk_siembras_rubro_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_semilla
+    ADD CONSTRAINT siembras_semilla_familia_id_17ef80a8_fk_siembras_rubro_id FOREIGN KEY (familia_id) REFERENCES siembras_rubro(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2516 (class 2606 OID 149334)
+-- Name: siembras_semilla_proovedor_id_41944856_fk_siembras_proovedor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY siembras_semilla
+    ADD CONSTRAINT siembras_semilla_proovedor_id_41944856_fk_siembras_proovedor_id FOREIGN KEY (proovedor_id) REFERENCES siembras_proovedor(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2533 (class 2606 OID 149645)
+-- Name: suelos_analisissu_muestra_id_c689aa81_fk_suelos_muestrasuelo_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY suelos_analisissuelo
+    ADD CONSTRAINT suelos_analisissu_muestra_id_c689aa81_fk_suelos_muestrasuelo_id FOREIGN KEY (muestra_id) REFERENCES suelos_muestrasuelo(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2534 (class 2606 OID 149632)
+-- Name: suelos_muest_invernadero_id_506dc285_fk_siembras_invernadero_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY suelos_muestrasuelo
+    ADD CONSTRAINT suelos_muest_invernadero_id_506dc285_fk_siembras_invernadero_id FOREIGN KEY (invernadero_id) REFERENCES siembras_invernadero(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2535 (class 2606 OID 149637)
+-- Name: suelos_muestrasuelo_parcela_id_5b94a35f_fk_siembras_parcela_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY suelos_muestrasuelo
+    ADD CONSTRAINT suelos_muestrasuelo_parcela_id_5b94a35f_fk_siembras_parcela_id FOREIGN KEY (parcela_id) REFERENCES siembras_parcela(id) DEFERRABLE INITIALLY DEFERRED;
+
+
+--
+-- TOC entry 2714 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2016-08-05 11:06:50 EDT
+
+--
+-- PostgreSQL database dump complete
+--
+
