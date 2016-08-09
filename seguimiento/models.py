@@ -63,7 +63,7 @@ class CrecimientoCultivo(models.Model):
         (2, 'mm'),
 	)
 
-	muestra_cultivo = models.ForeignKey(CultivoMuestra, related_name='crecimiento-cultivo-muestra')
+	muestra_cultivo = models.ForeignKey(CultivoMuestra, related_name='crecimiento_muestra')
 	medida = models.FloatField(default=0.0)
 	unidad = models.IntegerField(default=1, choices=MEDIDAS)
 	fecha_registro = models.DateField(auto_now=True)

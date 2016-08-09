@@ -17,7 +17,8 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework_extensions.routers import ExtendedSimpleRouter
 from siembras.views import cultivo
-from .views import schema_view
+from seguimiento.views import muestra, seguimiento_cultivos
+# from .views import schema_view
 
 
 router = ExtendedSimpleRouter()
@@ -37,15 +38,53 @@ router = ExtendedSimpleRouter()
 #                     parents_query_lookups=['group__user', 'group'])
 # )
 
-# Client Routes
-client_routes = router.register(
+# Siembras module Routes
+cultivo_routes = router.register(
     r'cultivos',
     cultivo.CultivoViewSet,
     base_name='cultivo')
 
+parcela_routes = router.register(
+    r'parcelas',
+    cultivo.ParcelaViewSet,
+    base_name='parcela')
+
+
+invernadero_routes = router.register(
+    r'invernaderos',
+    cultivo.InvernaderoViewSet,
+    base_name='invernadero')
+
+
+lote_routes = router.register(
+    r'lotes',
+    cultivo.LoteSiembraViewSet,
+    base_name='lote')
+
+# Seguimiento Module
+muestras_routes = router.register(
+	r'muestras',
+    muestra.MuestraCultivoViewSet,
+    base_name='cultivo-muestra'
+)
+
+muestras_cultivo = cultivo_routes.register(
+	r'seguimiento',
+    seguimiento_cultivos.SeguimientoCultivoViewSet,
+    base_name='cultivo-seguimiento',
+	parents_query_lookups=['cultivo_id']
+)
+
+actividades_cultivo = cultivo_routes.register(
+	r'actividades',
+    seguimiento_cultivos.ActividadesCultivoViewSet,
+    base_name='cultivo-actividades',
+	parents_query_lookups=['cultivo']
+)
+
 
 urlpatterns = [
-	url(r'^docs/', schema_view),
+	url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^admin/', admin.site.urls),
 ]
 
