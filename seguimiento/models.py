@@ -103,11 +103,20 @@ class PlagasCultivo(models.Model):
 	imagen = models.CharField(max_length=255)
 	
 
-class Fertilizante(models.Model):
+class Insumo(models.Model):
+	MEDIDAS = (
+        (1, 'cm'),
+        (2, 'mm'),
+	    (3, 'ml'),
+	    (4, 'l'),
+	    (5, 'Kg'),
+	    (6, 'mg'),
+	)
 	nombre = models.CharField(max_length=255)
 	codigo = models.CharField(max_length=255, blank=True)
 	proovedor = models.ForeignKey(Proovedor)
-
+	cantidad = models.FloatField(default=0.0)
+	medida = models.IntegerField(choices=MEDIDAS, default=5)
 	def __str__(self):
 			return '%s' % self.nombre
 
@@ -115,11 +124,22 @@ class Fertilizante(models.Model):
 			return '%s' % self.nombre
 
 
-class FertilizanteCultivo(models.Model):
+class InsumoCultivo(models.Model):
+	MEDIDAS = (
+        (1, 'cm'),
+        (2, 'mm'),
+	    (3, 'ml'),
+	    (4, 'l'),
+	    (5, 'Kg'),
+	    (6, 'mg'),
+	)
+
 	fecha_aplicacion = models.DateField()
-	fertilizante = models.ForeignKey(Fertilizante)
+	insumo = models.ForeignKey(Insumo)
 	observaciones = models.TextField()
 	cultivo = models.ForeignKey(Cultivo)
+	cantidad = models.FloatField(default=0.0)
+	medida = models.IntegerField(choices=MEDIDAS, default=5)
 
 	def __str__(self):
 			return '%s - %s' % (self.fertilizante.nombre,self.cultivo.__str__())
