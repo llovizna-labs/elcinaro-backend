@@ -65,10 +65,10 @@ lote_routes = router.register(
 muestras_routes = router.register(
 	r'muestras',
     muestra.MuestraCultivoViewSet,
-    base_name='cultivo-muestra'
+    base_name='muestras'
 )
 
-muestras_cultivo = cultivo_routes.register(
+seguimiento_cultivo = cultivo_routes.register(
 	r'seguimiento',
     seguimiento_cultivos.SeguimientoCultivoViewSet,
     base_name='cultivo-seguimiento',
@@ -79,6 +79,13 @@ actividades_cultivo = cultivo_routes.register(
 	r'actividades',
     seguimiento_cultivos.ActividadesCultivoViewSet,
     base_name='cultivo-actividades',
+	parents_query_lookups=['cultivo']
+)
+
+muestras_cultivo = cultivo_routes.register(
+	r'muestras',
+	muestra.MuestraCultivoViewSet,
+	base_name='cultivo-muestras',
 	parents_query_lookups=['cultivo']
 )
 
