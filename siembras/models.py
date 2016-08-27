@@ -111,7 +111,8 @@ class Invernadero(models.Model):
 
 class LoteSiembra(models.Model):
 	semilla_utilizada = models.ForeignKey(Semilla)
-	cantidad = models.FloatField(default=0.0)
+	cantidad_semillas_enviadas = models.FloatField(default=0.0)
+	cantidad_semillas_recibidas = models.FloatField(default=0.0)
 	fecha_enviado = models.DateField(blank=True, null=True)
 	fecha_recibido = models.DateField(blank=True, null=True)
 	proovedor = models.ForeignKey(Proovedor, blank=True, null=True)

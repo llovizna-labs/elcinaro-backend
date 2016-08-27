@@ -101,7 +101,7 @@ class PlagasCultivo(models.Model):
 	fecha_aparacion = models.DateField()
 	plaga = models.ForeignKey(Plaga)
 	imagen = models.CharField(max_length=255)
-	
+
 
 class Insumo(models.Model):
 	MEDIDAS = (
@@ -122,6 +122,22 @@ class Insumo(models.Model):
 
 	def __unicode__(self):
 			return '%s' % self.nombre
+
+
+class Cosecha(models.Model):
+	MEDIDAS = (
+        (1, 'cm'),
+        (2, 'mm'),
+	    (3, 'ml'),
+	    (4, 'l'),
+	    (5, 'Kg'),
+	    (6, 'mg'),
+	)
+	cultivo = models.ForeignKey(Cultivo)
+	fecha_cosecha =  models.DateField(blank=True)
+	cantidad = models.FloatField(default=0.0)
+	medida = models.IntegerField(choices=MEDIDAS, default=5)
+
 
 
 class InsumoCultivo(models.Model):

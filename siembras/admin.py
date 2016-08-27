@@ -10,7 +10,7 @@ class CultivoInlineAdmin(admin.TabularInline):
 
 class LoteSiembraAdmin(admin.ModelAdmin):
 	model = LoteSiembra
-	list_display = ("__unicode__", "proovedor", "fecha_enviado", "cantidad")
+	list_display = ("__unicode__", "proovedor", "fecha_enviado", "cantidad_semillas_enviadas", "cantidad_semillas_recibidas")
 
 
 class CategoriaAdmin(admin.ModelAdmin):

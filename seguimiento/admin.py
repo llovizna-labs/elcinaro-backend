@@ -1,8 +1,11 @@
 from django.contrib import admin
 
-from .models import SeguimientoCultivo, ActividadesCultivo, PlagasCultivo, Plaga, CultivoMuestra, InsumoCultivo, Insumo, CrecimientoCultivo
+from .models import SeguimientoCultivo, ActividadesCultivo, PlagasCultivo, Plaga, CultivoMuestra, InsumoCultivo, Insumo, CrecimientoCultivo, Cosecha
 # Register your models here.
 
+
+class CosechaAdmin(admin.ModelAdmin):
+	model = Cosecha
 
 class CultivoMuestraAdmin(admin.ModelAdmin):
 	model = CultivoMuestra
@@ -35,6 +38,9 @@ class InsumoAdmin(admin.ModelAdmin):
 class InsumoCultivoAdmin(admin.ModelAdmin):
 	model = InsumoCultivo
 
+
+
+admin.site.register(Cosecha, CosechaAdmin)
 
 admin.site.register(CultivoMuestra, CultivoMuestraAdmin)
 
