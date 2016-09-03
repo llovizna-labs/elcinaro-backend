@@ -39,6 +39,20 @@ router = ExtendedSimpleRouter()
 # )
 
 # Siembras module Routes
+#
+rubro_routes = router.register(
+    r'rubros',
+    cultivo.RubroViewSet,
+    base_name='rubro'
+)
+
+rubro_meta = rubro_routes.register(
+	r'media',
+	cultivo.RubroMediaViewSet,
+	base_name='rubro-media',
+	parents_query_lookups=['rubro']
+)
+
 cultivo_routes = router.register(
     r'cultivos',
     cultivo.CultivoViewSet,
