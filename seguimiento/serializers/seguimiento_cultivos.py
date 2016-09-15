@@ -1,18 +1,57 @@
+from siembras.models import Cultivo
+
 __author__ = 'ronsuez'
 from rest_framework import serializers
-from seguimiento.models import SeguimientoCultivo, ActividadesCultivo
+from seguimiento.models import ActividadesCultivo, Insumo, MEDIDAS, ACTIVIDADES, InsumoCultivo, \
+	PlagasCultivo, CosechaCultivo
 
 
-class SeguimientoCultivoSerializer(serializers.ModelSerializer):
+class CultivoSerializer(serializers.ModelSerializer):
 	class Meta:
-		model = SeguimientoCultivo
-		fields = ('id', 'cultivo', 'observaciones', 'fecha_registro')
+		model = Cultivo
+		fields = ('id')
 
+
+class PlagasCultivoSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = PlagasCultivo
+		fields = ('cultivo', 'plaga')
+
+
+class InsumoCultivoSerializer(serializers.ModelSerializer):
+	medida = serializers.ChoiceField(choices=MEDIDAS, default='l')
+
+	class Meta:
+		model = InsumoCultivo
+		fields = ('cultivo', 'insumo', 'fecha_aplicacion', 'cantidad', 'medida')
+
+
+class CosechaCultivoSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = CosechaCultivo
+		fields = ('cultivo', 'fecha_cosecha', 'cantidad', 'medida')
+
+class InsumoSerializer(serializers.ModelSerializer):
+	medida = serializers.ChoiceField(choices=MEDIDAS, default='l')
+	class Meta:
+		model = Insumo
+		fields = ('id', 'nombre', 'cantidad', 'medida', 'proovedor')
+
+
+class ActividadesSerializer(serializers.ModelSerializer):
+	cosecha = CosechaCultivoSerializer(allow_null=True)
+	insumo = InsumoCultivoSerializer(allow_null=True)
+	class Meta:
+		model = ActividadesCultivo
+		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+
+	# def create(self, validated_data):
+	# 	insumo = validated_data.pop('insumo')
+	#
+	# 	actividad =
 
 class ActividadesCultivoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ActividadesCultivo
-		fields = ('id', 'fecha_realizacion', 'actividad', 'observacion', 'cultivo')
-
-
+		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
 

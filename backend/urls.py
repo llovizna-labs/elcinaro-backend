@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework_extensions.routers import ExtendedSimpleRouter
+from rest_framework.authtoken import views
 from siembras.views import cultivo
 from seguimiento.views import muestra, seguimiento_cultivos
 # from .views import schema_view
@@ -46,11 +47,24 @@ rubro_routes = router.register(
     base_name='rubro'
 )
 
+
+semilla_routes = router.register(
+    r'semillas',
+    cultivo.SemillaViewSet,
+    base_name='semilla'
+)
+
 rubro_meta = rubro_routes.register(
 	r'media',
 	cultivo.RubroMediaViewSet,
 	base_name='rubro-media',
 	parents_query_lookups=['rubro']
+)
+
+actividades = router.register(
+	r'actividades',
+	seguimiento_cultivos.ActividadesViewSet,
+	base_name='actividades'
 )
 
 cultivo_routes = router.register(
@@ -82,18 +96,19 @@ muestras_routes = router.register(
     base_name='muestras'
 )
 
-seguimiento_cultivo = cultivo_routes.register(
-	r'seguimiento',
-    seguimiento_cultivos.SeguimientoCultivoViewSet,
-    base_name='cultivo-seguimiento',
-	parents_query_lookups=['cultivo_id']
-)
 
 actividades_cultivo = cultivo_routes.register(
 	r'actividades',
     seguimiento_cultivos.ActividadesCultivoViewSet,
     base_name='cultivo-actividades',
 	parents_query_lookups=['cultivo']
+)
+
+
+insumos = router.register(
+	r'insumos',
+    seguimiento_cultivos.InsumoViewSet,
+    base_name='insumo'
 )
 
 muestras_cultivo = cultivo_routes.register(
@@ -105,8 +120,9 @@ muestras_cultivo = cultivo_routes.register(
 
 
 urlpatterns = [
+	url(r'^auth/', views.obtain_auth_token),
 	url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls)
 ]
 
 urlpatterns += router.urls

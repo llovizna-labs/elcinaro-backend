@@ -25,56 +25,66 @@ SECRET_KEY = 'b%n$tr%^(1rf!+t1ejb=^epimt%1(7rh7gps6wqm8sh$$+9wj7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# Allow all host headers
+
+
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ORIGIN_WHITELIST = (
+	'http://localhost:3000'
+)
 
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'rest_framework',
-    'rest_framework_swagger',
-    'import_export',
-    'django_extensions',
-    'siembras',
-    'suelos',
-    'seguimiento',
-    'pedidos'
+	'django.contrib.admin',
+	'django.contrib.auth',
+	'django.contrib.contenttypes',
+	'django.contrib.sessions',
+	'django.contrib.messages',
+	'django.contrib.staticfiles',
+	'rest_framework',
+    'rest_framework.authtoken',
+	'rest_framework_swagger',
+	'import_export',
+	'corsheaders',
+	'django_extensions',
+	'siembras',
+	'suelos',
+	'seguimiento',
+	'pedidos'
 ]
 
 MIDDLEWARE_CLASSES = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+	'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
-            ],
-        },
-    },
+	{
+		'BACKEND': 'django.template.backends.django.DjangoTemplates',
+		'DIRS': [],
+		'APP_DIRS': True,
+		'OPTIONS': {
+			'context_processors': [
+				'django.template.context_processors.debug',
+				'django.template.context_processors.request',
+				'django.contrib.auth.context_processors.auth',
+				'django.contrib.messages.context_processors.messages',
+			],
+		},
+	},
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
@@ -84,7 +94,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 # DATABASES = {
-#     'default': {
+# 'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
@@ -105,9 +115,10 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 
 import dj_database_url
+
 DATABASES = {}
 
-DATABASES['default'] =  dj_database_url.config()
+DATABASES['default'] = dj_database_url.config()
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -116,6 +127,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Static asset configuration
 import os
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
@@ -127,18 +139,18 @@ STATICFILES_DIRS = ()
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+	{
+		'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+	},
+	{
+		'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+	},
 ]
 
 
@@ -166,47 +178,56 @@ STATIC_URL = '/static/'
 # http://www.django-rest-framework.org/
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.DjangoModelPermissions'
-    # ],
-    #  'DEFAULT_RENDERER_CLASSES': [
-    #     'rest_framework.renderers.<corresponding_renderer>',
-    # ]
+	# Use Django's standard `django.contrib.auth` permissions,
+	# or allow read-only access for unauthenticated users.
+	# 'DEFAULT_PERMISSION_CLASSES': [
+	#     'rest_framework.permissions.DjangoModelPermissions'
+	# ],
+	#  'DEFAULT_RENDERER_CLASSES': [
+	#     'rest_framework.renderers.<corresponding_renderer>',
+	# ]
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
 }
 
 
+
+
 SWAGGER_SETTINGS = {
-    'exclude_namespaces': [],
-    'api_version': '0.1',
-    'api_path': '/',
-    'enabled_methods': [
-        'get',
-        'post',
-        'put',
-        'patch',
-        'delete'
-    ],
-    'api_key': '12345',
-    'is_authenticated': True,
-    'is_superuser': True,
-    'permission_denied_handler': None,
-    'resource_access_handler': None,
-    'info': {
-        'contact': 'apiteam@wordnik.com',
-        'description': 'This is a sample server Petstore server. '
-                       'You can find out more about Swagger at '
-                       '<a href="http://swagger.wordnik.com">'
-                       'http://swagger.wordnik.com</a> '
-                       'or on irc.freenode.net, #swagger. '
-                       'For this sample, you can use the api key '
-                       '"special-key" to test '
-                       'the authorization filters',
-        'license': 'Apache 2.0',
-        'licenseUrl': 'http://www.apache.org/licenses/LICENSE-2.0.html',
-        'termsOfServiceUrl': 'http://helloreverb.com/terms/',
-        'title': 'El Cinaro API',
-    },
-    'doc_expansion': 'none',
+	'exclude_namespaces': [],
+	'api_version': '0.1',
+	'api_path': '/',
+	'enabled_methods': [
+		'get',
+		'post',
+		'put',
+		'patch',
+		'delete'
+	],
+	'api_key': '12345',
+	'is_authenticated': True,
+	'is_superuser': True,
+	'permission_denied_handler': None,
+	'resource_access_handler': None,
+	'info': {
+		'contact': 'apiteam@wordnik.com',
+		'description': 'This is a sample server Petstore server. '
+		               'You can find out more about Swagger at '
+		               '<a href="http://swagger.wordnik.com">'
+		               'http://swagger.wordnik.com</a> '
+		               'or on irc.freenode.net, #swagger. '
+		               'For this sample, you can use the api key '
+		               '"special-key" to test '
+		               'the authorization filters',
+		'license': 'Apache 2.0',
+		'licenseUrl': 'http://www.apache.org/licenses/LICENSE-2.0.html',
+		'termsOfServiceUrl': 'http://helloreverb.com/terms/',
+		'title': 'El Cinaro API',
+	},
+	'doc_expansion': 'none',
 }

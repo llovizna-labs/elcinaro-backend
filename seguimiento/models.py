@@ -1,4 +1,5 @@
 from __future__ import unicode_literals
+from django.contrib.contenttypes.fields import GenericForeignKey
 
 from django.db import models
 from siembras.models import Cultivo, Proovedor
@@ -11,37 +12,23 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 # Create your models here.
 
 
-class SeguimientoCultivo(models.Model):
-	cultivo = models.ForeignKey(Cultivo, related_name='seguimientos')
-	observaciones = models.TextField()
-	fecha_registro = models.DateField(auto_now_add=True)
+MEDIDAS = (
+    (1, 'cm'),
+    (2, 'mm'),
+    (3, 'ml'),
+    (4, 'l'),
+    (5, 'Kg'),
+    (6, 'mg'),
+)
 
-	def __str__(self):
-			return '%s ' % self.cultivo.codigo
+ACTIVIDADES = (
+    (1, 'Desmalezamiento'),
+    (2, 'Riego'),
+    (3, 'Fertilizacion'),
+    (4, 'Plaguicida'),
+    (5, 'Limpieza'),
+)
 
-	def __unicode__(self):
-			return '%s ' % self.cultivo.codigo
-
-
-class ActividadesCultivo(models.Model):
-	ACTIVIDADES = (
-        (1, 'Desmalezamiento'),
-        (2, 'Riego'),
-        (3, 'Fertilizacion'),
-	    (4, 'Plaguicida'),
-	    (5, 'Limpieza'),
-	)
-
-	fecha_realizacion = models.DateTimeField()
-	actividad = models.IntegerField(default=1, choices=ACTIVIDADES)
-	observacion = models.TextField(blank=True)
-	cultivo = models.ForeignKey(Cultivo, related_name='actividades')
-
-	def __str__(self):
-			return '%s ' % self.cultivo.codigo
-
-	def __unicode__(self):
-			return '%s ' % self.cultivo.codigo
 
 
 class CultivoMuestra(models.Model):
@@ -55,6 +42,7 @@ class CultivoMuestra(models.Model):
 
 	def __unicode__(self):
 			return '%s - %s ' % (self.codigo, self.cultivo.codigo)
+
 
 
 class CrecimientoCultivo(models.Model):
@@ -101,17 +89,9 @@ class PlagasCultivo(models.Model):
 	fecha_aparacion = models.DateField()
 	plaga = models.ForeignKey(Plaga)
 	imagen = models.CharField(max_length=255)
-
+	cultivo = models.ForeignKey(Cultivo)
 
 class Insumo(models.Model):
-	MEDIDAS = (
-        (1, 'cm'),
-        (2, 'mm'),
-	    (3, 'ml'),
-	    (4, 'l'),
-	    (5, 'Kg'),
-	    (6, 'mg'),
-	)
 	nombre = models.CharField(max_length=255)
 	codigo = models.CharField(max_length=255, blank=True)
 	proovedor = models.ForeignKey(Proovedor)
@@ -124,17 +104,9 @@ class Insumo(models.Model):
 			return '%s' % self.nombre
 
 
-class Cosecha(models.Model):
-	MEDIDAS = (
-        (1, 'cm'),
-        (2, 'mm'),
-	    (3, 'ml'),
-	    (4, 'l'),
-	    (5, 'Kg'),
-	    (6, 'mg'),
-	)
+class CosechaCultivo(models.Model):
 	cultivo = models.ForeignKey(Cultivo)
-	fecha_cosecha =  models.DateField(blank=True)
+	fecha_cosecha = models.DateField(blank=True)
 	cantidad = models.FloatField(default=0.0)
 	medida = models.IntegerField(choices=MEDIDAS, default=5)
 
@@ -158,7 +130,32 @@ class InsumoCultivo(models.Model):
 	medida = models.IntegerField(choices=MEDIDAS, default=5)
 
 	def __str__(self):
-			return '%s - %s' % (self.fertilizante.nombre,self.cultivo.__str__())
+			return '%s - %s' % (self.insumo.nombre,self.cultivo.__str__())
 
 	def __unicode__(self):
-			return '%s - %s' % (self.fertilizante.nombre, self.cultivo.__unicode__())
+			return '%s - %s' % (self.insumo.nombre, self.cultivo.__unicode__())
+
+
+class ActividadesCultivo(models.Model):
+	ACTIVIDADES = (
+        (1, 'Desmalezamiento'),
+        (2, 'Riego'),
+        (3, 'Fertilizacion'),
+	    (4, 'Plaguicida'),
+	    (5, 'Limpieza'),
+	)
+
+	cultivo = models.ForeignKey(Cultivo, related_name='actividades')
+	fecha_realizacion = models.DateTimeField()
+	actividad = models.IntegerField(default=1, choices=ACTIVIDADES)
+	observaciones = models.TextField(blank=True)
+	crecimiento = models.ForeignKey(CrecimientoCultivo, null=True, blank=True)
+	cosecha = models.ForeignKey(CosechaCultivo, null=True, blank=True)
+	insumo = models.ForeignKey(InsumoCultivo, null=True, blank=True)
+
+
+	def __str__(self):
+			return '%s ' % self.cultivo.codigo
+
+	def __unicode__(self):
+			return '%s ' % self.cultivo.codigo

@@ -25,6 +25,7 @@ class Categoria(models.Model):
 
 class Rubro(models.Model):
 	nombre = models.CharField(max_length=255, unique=True)
+
 	def __str__(self):
 		return '%s ' % self.nombre
 
@@ -32,8 +33,9 @@ class Rubro(models.Model):
 		return '%s ' % self.nombre
 
 
+
 class RubroImagen(models.Model):
-	rubro = models.ForeignKey(Rubro)
+	rubro = models.ForeignKey(Rubro, related_name='rubro_media')
 	imagen = models.URLField(max_length=2000)
 
 
@@ -135,8 +137,8 @@ class LoteSiembra(models.Model):
 class Cultivo(models.Model):
 	codigo = models.CharField(max_length=255)
 	lote = models.ForeignKey(LoteSiembra)
-	invernadero = models.ForeignKey(Invernadero, blank=True, null=True)
-	parcela = models.ForeignKey(Parcela, blank=True, null=True)
+	invernadero = models.ForeignKey(Invernadero, blank=True, null=True, related_name='cultivos_invernadero')
+	parcela = models.ForeignKey(Parcela, blank=True, null=True, related_name='cultivos_parcela')
 	fecha_siembra = models.DateField(blank=True, null=True)
 	posicion_inicial = models.IntegerField()
 	posicion_final = models.IntegerField()
