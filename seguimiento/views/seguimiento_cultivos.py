@@ -33,7 +33,7 @@ class ActividadesCultivoViewSet(viewsets.ModelViewSet):
 
 class ActividadesViewSet(viewsets.ModelViewSet):
 	queryset = ActividadesCultivo.objects.all()
-	serializer_class = ActividadesSerializer
+	serializer_class = ActividadesCultivoSerializer
 	model = ActividadesCultivo
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)

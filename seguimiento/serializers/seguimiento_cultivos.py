@@ -4,12 +4,12 @@ __author__ = 'ronsuez'
 from rest_framework import serializers
 from seguimiento.models import ActividadesCultivo, Insumo, MEDIDAS, ACTIVIDADES, InsumoCultivo, \
 	PlagasCultivo, CosechaCultivo
-
+from siembras.serializers.cultivo import CultivoSerializer as SiembrasCultivoSerializer
 
 class CultivoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Cultivo
-		fields = ('id')
+		fields = ('id', 'lote')
 
 
 class PlagasCultivoSerializer(serializers.ModelSerializer):
@@ -41,6 +41,8 @@ class InsumoSerializer(serializers.ModelSerializer):
 class ActividadesSerializer(serializers.ModelSerializer):
 	cosecha = CosechaCultivoSerializer(allow_null=True)
 	insumo = InsumoCultivoSerializer(allow_null=True)
+	cultivo = CultivoSerializer()
+
 	class Meta:
 		model = ActividadesCultivo
 		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
@@ -50,7 +52,9 @@ class ActividadesSerializer(serializers.ModelSerializer):
 	#
 	# 	actividad =
 
+
 class ActividadesCultivoSerializer(serializers.ModelSerializer):
+	cultivo = SiembrasCultivoSerializer()
 	class Meta:
 		model = ActividadesCultivo
 		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')

@@ -89,30 +89,6 @@ class InsumoCultivo(models.Model):
 			return '%s - %s' % (self.insumo.nombre, self.cultivo.__unicode__())
 
 
-class ActividadesCultivo(models.Model):
-	ACTIVIDADES = (
-        (1, 'Desmalezamiento'),
-        (2, 'Riego'),
-        (3, 'Fertilizacion'),
-	    (4, 'Plaguicida'),
-	    (5, 'Limpieza'),
-	)
-
-	cultivo = models.ForeignKey(Cultivo, related_name='actividades')
-	fecha_realizacion = models.DateTimeField()
-	actividad = models.IntegerField(default=1, choices=ACTIVIDADES)
-	observaciones = models.TextField(blank=True)
-	crecimiento = models.ForeignKey(CrecimientoCultivo, null=True, blank=True)
-	cosecha = models.ForeignKey(CosechaCultivo, null=True, blank=True)
-	insumo = models.ForeignKey(InsumoCultivo, null=True, blank=True)
-
-
-	def __str__(self):
-			return '%s ' % self.cultivo.codigo
-
-	def __unicode__(self):
-			return '%s ' % self.cultivo.codigo
-
 
 
 
@@ -163,4 +139,28 @@ class CrecimientoCultivo(models.Model):
 		filebuffer = InMemoryUploadedFile(
 			buffer, None, filename, 'image/png', buffer.len, None)
 		self.qrcode.save(filename, filebuffer)
+
+
+class ActividadesCultivo(models.Model):
+	ACTIVIDADES = (
+        (1, 'Desmalezamiento'),
+        (2, 'Riego'),
+        (3, 'Fertilizacion'),
+	    (4, 'Plaguicida'),
+	    (5, 'Limpieza'),
+	)
+
+	cultivo = models.ForeignKey(Cultivo, related_name='actividades')
+	fecha_realizacion = models.DateTimeField()
+	actividad = models.IntegerField(default=1, choices=ACTIVIDADES)
+	observaciones = models.TextField(blank=True)
+	crecimiento = models.ForeignKey(CrecimientoCultivo, null=True, blank=True)
+	cosecha = models.ForeignKey(CosechaCultivo, null=True, blank=True)
+	insumo = models.ForeignKey(InsumoCultivo, null=True, blank=True)
+
+	def __str__(self):
+			return '%s ' % self.cultivo.codigo
+
+	def __unicode__(self):
+			return '%s ' % self.cultivo.codigo
 
