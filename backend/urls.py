@@ -19,8 +19,7 @@ from rest_framework_extensions.routers import ExtendedSimpleRouter
 from rest_framework.authtoken import views
 from siembras.views import cultivo
 from seguimiento.views import muestra, seguimiento_cultivos
-# from .views import schema_view
-
+from pedidos.views import clientes
 
 router = ExtendedSimpleRouter()
 
@@ -40,13 +39,12 @@ router = ExtendedSimpleRouter()
 # )
 
 # Siembras module Routes
-#
+
 rubro_routes = router.register(
     r'rubros',
     cultivo.RubroViewSet,
     base_name='rubro'
 )
-
 
 semilla_routes = router.register(
     r'semillas',
@@ -119,10 +117,18 @@ muestras_cultivo = cultivo_routes.register(
 )
 
 
+# Pedidos Module
+
+cliente_routes = router.register(
+    r'clientes',
+    clientes.ClienteViewSet,
+    base_name='cliente'
+)
+
 urlpatterns = [
 	url(r'^auth/', views.obtain_auth_token),
 	url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^admin/', admin.site.urls)
+    url(r'^admin/', admin.site.urls),
 ]
 
 urlpatterns += router.urls

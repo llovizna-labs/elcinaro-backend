@@ -1,0 +1,9 @@
+curl -F 'client_id=4dd6a5e02dde47868b380bc962f9ea0d' \
+    -F 'client_secret=ee25476fab0d46e2abeac29f8a0047f6' \
+    -F 'grant_type=authorization_code' \
+    -F 'redirect_uri=AUTHORIZATION_REDIRECT_URI' \
+    -F 'code=CODE' \
+    https://api.instagram.com/oauth/access_token
+
+
+    https://api.instagram.com/oauth/authorize/?client_id=4dd6a5e02dde47868b380bc962f9ea0d&redirect_uri=REDIRECT-URI&response_type=code
