@@ -53,7 +53,8 @@ INSTALLED_APPS = [
 	'siembras',
 	'suelos',
 	'seguimiento',
-	'pedidos'
+	'pedidos',
+    'reports'
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -192,7 +193,10 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ),
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+    'PAGE_SIZE': 100,
+    'DEFAULT_RENDERER_CLASSES': (
+	    'rest_framework_csv.renderers.CSVRenderer',
+    )
 }
 
 
@@ -216,7 +220,7 @@ SWAGGER_SETTINGS = {
 	'resource_access_handler': None,
 	'info': {
 		'contact': 'apiteam@wordnik.com',
-		'description': 'This is a sample server Petstore server. '
+		'description': 'Welcome to El Cinaro API docs'
 		               'You can find out more about Swagger at '
 		               '<a href="http://swagger.wordnik.com">'
 		               'http://swagger.wordnik.com</a> '

@@ -13,14 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework_extensions.routers import ExtendedSimpleRouter
 from rest_framework.authtoken import views
 from siembras.views import cultivo
 from seguimiento.views import muestra, seguimiento_cultivos
 from pedidos.views import clientes
-
+from reports.views import cultivo_csv
 router = ExtendedSimpleRouter()
 
 # User Routes
@@ -59,11 +59,11 @@ rubro_meta = rubro_routes.register(
 	parents_query_lookups=['rubro']
 )
 
-actividades = router.register(
-	r'actividades',
-	seguimiento_cultivos.ActividadesViewSet,
-	base_name='actividades'
-)
+# actividades = router.register(
+# 	r'actividades',
+# 	seguimiento_cultivos.ActividadesViewSet,
+# 	base_name='actividades'
+# )
 
 cultivo_routes = router.register(
     r'cultivos',
@@ -125,10 +125,16 @@ cliente_routes = router.register(
     base_name='cliente'
 )
 
+
+# Reports
+
 urlpatterns = [
 	url(r'^auth/', views.obtain_auth_token),
 	url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^admin/', admin.site.urls),
+	url(r'^admin/', admin.site.urls),
+    url(r'^actividades/', seguimiento_cultivos.ActividadesViewSet.as_view()),
+    url(r'^reports/', cultivo_csv),
+
 ]
 
 urlpatterns += router.urls

@@ -9,10 +9,10 @@ from rest_framework_extensions.mixins import NestedViewSetMixin
 from rest_framework.filters import DjangoFilterBackend, OrderingFilter, SearchFilter
 from rest_framework.pagination import PageNumberPagination
 
-from seguimiento.serializers.seguimiento_cultivos import   ActividadesCultivoSerializer, \
+from seguimiento.serializers.seguimiento_cultivos import ActividadesCultivoSerializer, \
 	InsumoSerializer, InsumoCultivoSerializer, ActividadesSerializer
 
-from seguimiento.models import  ActividadesCultivo, Insumo, InsumoCultivo
+from seguimiento.models import ActividadesCultivo, Insumo, InsumoCultivo
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -31,13 +31,13 @@ class ActividadesCultivoViewSet(viewsets.ModelViewSet):
 	ordering_fields = ('fecha_realizacion', 'actividad')
 
 
-class ActividadesViewSet(viewsets.ModelViewSet):
-	queryset = ActividadesCultivo.objects.all()
-	serializer_class = ActividadesCultivoSerializer
-	model = ActividadesCultivo
-	pagination_class = StandardResultsSetPagination
-	filter_backends = (OrderingFilter, SearchFilter)
-	ordering_fields = ('fecha_realizacion', 'actividad')
+# class ActividadesViewSet(viewsets.ModelViewSet):
+# queryset = ActividadesCultivo.objects.all()
+# 	serializer_class = ActividadesCultivoSerializer
+# 	model = ActividadesCultivo
+# 	pagination_class = StandardResultsSetPagination
+# 	filter_backends = (OrderingFilter, SearchFilter)
+# 	ordering_fields = ('fecha_realizacion', 'actividad')
 
 
 
@@ -50,6 +50,34 @@ class InsumoViewSet(viewsets.ModelViewSet):
 	filter_backends = (OrderingFilter, SearchFilter)
 	ordering_fields = ('id', 'nombre', 'cantidad', 'proovedor')
 
+
+class ActividadesViewSet(generics.ListCreateAPIView):
+
+	def create(self, request, *args, **kwargs):
+		actividades = ['riego', 'desmalezamiento', 'limpieza', 'observaciones']
+		insumos = ['fertilizacion', 'plaguicida']
+
+		for selector, cultivos in request.data.iteritems():
+			if selector in actividades:
+				actividad_serializer = ActividadesCultivoSerializer(data=cultivos, many=True)
+			if selector in insumos:
+				insumos_serializer = InsumoCultivoSerializer(data=cultivos, many=True)
+			else:
+				print(cultivos)
+
+		if not actividad_serializer.is_valid():
+			return Response(actividad_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+		if not insumos_serializer.is_valid():
+			return Response(insumos_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+		response = {
+			'data': request.data,
+			'actividades': actividad_serializer.data,
+			'insumos': insumos_serializer.data
+		}
+
+		return Response(response, status=status.HTTP_200_OK)
 
 # class ActividadesViewSet(generics.ListCreateAPIView):
 # 	serializer_class = ActividadesSerializer

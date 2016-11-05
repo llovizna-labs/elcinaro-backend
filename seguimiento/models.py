@@ -75,7 +75,7 @@ class InsumoCultivo(models.Model):
 	    (6, 'mg'),
 	)
 
-	fecha_aplicacion = models.DateField()
+	fecha_aplicacion = models.DateTimeField()
 	insumo = models.ForeignKey(Insumo)
 	observaciones = models.TextField()
 	cultivo = models.ForeignKey(Cultivo)
@@ -145,18 +145,17 @@ class ActividadesCultivo(models.Model):
 	ACTIVIDADES = (
         (1, 'Desmalezamiento'),
         (2, 'Riego'),
-        (3, 'Fertilizacion'),
-	    (4, 'Plaguicida'),
-	    (5, 'Limpieza'),
+        (3, 'Observaciones'),
+	    (4, 'Limpieza'),
 	)
 
 	cultivo = models.ForeignKey(Cultivo, related_name='actividades')
-	fecha_realizacion = models.DateTimeField()
+	fecha_realizacion = models.DateTimeField(blank=True, null=True)
 	actividad = models.IntegerField(default=1, choices=ACTIVIDADES)
 	observaciones = models.TextField(blank=True)
-	crecimiento = models.ForeignKey(CrecimientoCultivo, null=True, blank=True)
-	cosecha = models.ForeignKey(CosechaCultivo, null=True, blank=True)
-	insumo = models.ForeignKey(InsumoCultivo, null=True, blank=True)
+	# crecimiento = models.ForeignKey(CrecimientoCultivo, null=True, blank=True)
+	# cosecha = models.ForeignKey(CosechaCultivo, null=True, blank=True)
+	# insumo = models.ForeignKey(InsumoCultivo, null=True, blank=True)
 
 	def __str__(self):
 			return '%s ' % self.cultivo.codigo

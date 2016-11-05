@@ -145,6 +145,9 @@ class Cultivo(models.Model):
 	densidad_siembra = models.FloatField()
 	qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
 
+	def plantas_sembradas(self):
+		count = self.posicion_final - self.posicion_inicial
+		return count
 
 	def __str__(self):
 		return '%s - %s' % (self.lote.__str__(), self.codigo)

@@ -45,7 +45,7 @@ class ActividadesSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = ActividadesCultivo
-		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'insumo')
 
 	# def create(self, validated_data):
 	# 	insumo = validated_data.pop('insumo')
@@ -54,8 +54,7 @@ class ActividadesSerializer(serializers.ModelSerializer):
 
 
 class ActividadesCultivoSerializer(serializers.ModelSerializer):
-	cultivo = SiembrasCultivoSerializer()
 	class Meta:
 		model = ActividadesCultivo
-		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+		fields = ( 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion')
 
