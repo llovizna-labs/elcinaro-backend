@@ -20,13 +20,13 @@ from rest_framework.authtoken import views
 from siembras.views import cultivo
 from seguimiento.views import muestra, seguimiento_cultivos
 from pedidos.views import clientes
-
+from managment.views.admin import UserViewSet
 router = ExtendedSimpleRouter()
 
 # User Routes
-# user_routes = router.register(
-#     r'users', user.UserViewSet,
-#     base_name='user')
+user_routes = router.register(
+     r'users', UserViewSet, base_name='user')
+
 # (
 #   user_routes.register(r'groups',
 #                     user.GroupViewSet,

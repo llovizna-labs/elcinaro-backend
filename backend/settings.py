@@ -54,7 +54,8 @@ INSTALLED_APPS = [
 	'siembras',
 	'suelos',
 	'seguimiento',
-	'pedidos'
+	'pedidos',
+    'managment'
 ]
 
 MIDDLEWARE_CLASSES = [
