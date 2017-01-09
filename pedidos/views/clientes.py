@@ -25,4 +25,4 @@ class ClienteViewSet(viewsets.ModelViewSet):
 	model = Cliente
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)
-	ordering_fields = ('identificacion', 'telefono', 'email')
+	ordering_fields = ('identificacion', 'telefono', 'email', 'created', 'updated')

@@ -6,3 +6,4 @@ class RubroSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Rubro
         fields = ('id', 'nombre')
+

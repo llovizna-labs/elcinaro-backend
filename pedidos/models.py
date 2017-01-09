@@ -4,6 +4,8 @@ from django.db import models
 
 from django.core.validators import RegexValidator
 
+from django.utils import timezone
+
 from siembras.models import Rubro
 # Create your models here.
 #
@@ -16,6 +18,8 @@ class Cliente(models.Model):
 	telefono = models.CharField(validators=[phone_regex], blank=True, max_length=16)  # validators should be a list
 	email = models.EmailField(blank=True)
 	identification = models.CharField(max_length=100, unique=True)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '%s %s' % (self.nombre, self.apellido)

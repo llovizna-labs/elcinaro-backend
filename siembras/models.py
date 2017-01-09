@@ -44,7 +44,9 @@ class Proovedor(models.Model):
 	descripcion = models.CharField(max_length=255, blank=True)
 	telefono = models.CharField(max_length=255, blank=True)
 	direccion = models.CharField(max_length=255, blank=True)
-	categoria = models.ForeignKey(Categoria, default='Semillas')
+	categoria = models.ForeignKey(Categoria, default='')
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '%s ' % self.nombre
@@ -71,6 +73,8 @@ class Semilla(models.Model):
 	unidad = models.IntegerField(default=1, choices=MEDIDAS)
 	codigo = models.CharField(max_length=255, blank=True)
 	nivel_germinacion = models.FloatField(default=0.0, validators=[MinValueValidator(0.0), MaxValueValidator(1)])
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '%s - %s - %s' % (self.familia.nombre, self.proovedor.nombre, self.descripcion)

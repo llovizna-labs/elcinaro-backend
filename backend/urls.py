@@ -125,10 +125,23 @@ cliente_routes = router.register(
     base_name='cliente'
 )
 
+cliente_routes = router.register(
+    r'proovedores',
+    cultivo.ProovedorViewSet,
+    base_name='proovedor'
+)
+
+
+cliente_routes = router.register(
+    r'categorias',
+    cultivo.CategoriaViewSet,
+    base_name='categoria'
+)
 urlpatterns = [
 	url(r'^auth/', views.obtain_auth_token),
 	url(r'^docs/', include('rest_framework_swagger.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'^rest-auth/', include('rest_auth.urls'))
 ]
 
 urlpatterns += router.urls

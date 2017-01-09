@@ -5,6 +5,7 @@ from .models import Cliente, Factura, DetalleFactura
 
 class ClienteAdmin (admin.ModelAdmin):
 	model = Cliente
+	list_display = ['nombre', 'apellido', 'identification', 'email']
 
 
 class DetalleFacturaAdmin(admin.TabularInline):

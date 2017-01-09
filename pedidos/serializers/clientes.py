@@ -7,6 +7,6 @@ from pedidos.models import Cliente
 class ClienteSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Cliente
-		fields = ('id', 'identification', 'apellido', 'direccion', 'telefono', 'email')
+		fields = ('id', 'identification', 'nombre', 'apellido', 'direccion', 'telefono', 'email', 'created', 'updated')
 
 

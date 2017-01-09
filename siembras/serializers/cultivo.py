@@ -1,7 +1,9 @@
 from rest_framework import serializers
-from siembras.models import RubroImagen, Rubro, Cultivo, Parcela, Invernadero, LoteSiembra, Semilla, Proovedor
+from siembras.models import RubroImagen, Rubro, Cultivo, Parcela, Invernadero, LoteSiembra, Semilla, Proovedor, \
+	Categoria
 from seguimiento.serializers.muestra import CultivoMuestraSerializer
 
+import moment
 
 class RubroImagenSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -15,20 +17,27 @@ class RubroSerializer(serializers.ModelSerializer):
 		model = Rubro
 
 
-class ProovedorSerializer(serializers.ModelSerializer):
+class CategoriaSerializer(serializers.ModelSerializer):
 	class Meta:
 		fields = ('id', 'nombre', 'descripcion')
+		model = Categoria
+
+
+class ProovedorSerializer(serializers.ModelSerializer):
+	#categoria = CategoriaSerializer()
+	class Meta:
+		fields = ('id', 'nombre', 'descripcion', 'telefono', 'direccion', 'categoria', 'created', 'updated')
 		model = Proovedor
 
 
 class SemillaSerializer(serializers.ModelSerializer):
-	familia = RubroSerializer(read_only=True)
-	proovedor = ProovedorSerializer(read_only=True)
+	#familia = RubroSerializer()
+	#proovedor = ProovedorSerializer()
+
 	class Meta:
-		fields = ('id', 'familia', 'proovedor', 'descripcion', 'cantidad', 'unidad', 'codigo', 'nivel_germinacion')
+		fields = ('id', 'familia', 'proovedor', 'descripcion', 'cantidad', 'unidad', 'codigo', 'fecha_compra', 'nivel_germinacion', 'created', 'updated')
 		model = Semilla
-
-
+	
 class LoteSiembraSerializer(serializers.ModelSerializer):
 	semilla_utilizada = SemillaSerializer(read_only=True)
 	class Meta:
