@@ -62,3 +62,9 @@ docs/_build/
 target/
 
 
+#Pycharm
+.idea
+
+
+*~
+.DS_Store
