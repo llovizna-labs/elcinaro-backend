@@ -25,6 +25,8 @@ class Categoria(models.Model):
 
 class Rubro(models.Model):
 	nombre = models.CharField(max_length=255, unique=True)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '%s ' % self.nombre
@@ -44,7 +46,7 @@ class Proovedor(models.Model):
 	descripcion = models.CharField(max_length=255, blank=True)
 	telefono = models.CharField(max_length=255, blank=True)
 	direccion = models.CharField(max_length=255, blank=True)
-	categoria = models.ForeignKey(Categoria, default='')
+	categoria = models.ForeignKey(Categoria, related_name='proovedor_categoria')
 	created = models.DateTimeField(auto_now_add=True)
 	updated = models.DateTimeField(auto_now=True)
 
@@ -98,6 +100,10 @@ class Parcela(models.Model):
 	ubicacion = models.CharField(max_length=255)
 	codigo = models.CharField(max_length=255)
 	tipo = models.ForeignKey(TipoParcela)
+	largo_medida = models.FloatField(default=1.0)
+	ancho_medida = models.FloatField(default=2.0)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '%s ' % self.codigo

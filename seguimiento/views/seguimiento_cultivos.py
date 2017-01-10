@@ -41,7 +41,6 @@ class ActividadesViewSet(viewsets.ModelViewSet):
 
 
 
-@permission_classes((IsAuthenticatedOrReadOnly, ))
 class InsumoViewSet(viewsets.ModelViewSet):
 	queryset = Insumo.objects.all()
 	serializer_class = InsumoSerializer

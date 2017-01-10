@@ -21,11 +21,12 @@ from siembras.views import cultivo
 from seguimiento.views import muestra, seguimiento_cultivos
 from pedidos.views import clientes
 from managment.views.admin import UserViewSet
+
 router = ExtendedSimpleRouter()
 
 # User Routes
 user_routes = router.register(
-     r'users', UserViewSet, base_name='user')
+	r'users', UserViewSet, base_name='user')
 
 # (
 #   user_routes.register(r'groups',
@@ -41,15 +42,15 @@ user_routes = router.register(
 # Siembras module Routes
 
 rubro_routes = router.register(
-    r'rubros',
-    cultivo.RubroViewSet,
-    base_name='rubro'
+	r'rubros',
+	cultivo.RubroViewSet,
+	base_name='rubro'
 )
 
 semilla_routes = router.register(
-    r'semillas',
-    cultivo.SemillaViewSet,
-    base_name='semilla'
+	r'semillas',
+	cultivo.SemillaViewSet,
+	base_name='semilla'
 )
 
 rubro_meta = rubro_routes.register(
@@ -66,47 +67,43 @@ actividades = router.register(
 )
 
 cultivo_routes = router.register(
-    r'cultivos',
-    cultivo.CultivoViewSet,
-    base_name='cultivo')
+	r'cultivos',
+	cultivo.CultivoViewSet,
+	base_name='cultivo')
 
 parcela_routes = router.register(
-    r'parcelas',
-    cultivo.ParcelaViewSet,
-    base_name='parcela')
-
+	r'parcelas',
+	cultivo.ParcelaViewSet,
+	base_name='parcela')
 
 invernadero_routes = router.register(
-    r'invernaderos',
-    cultivo.InvernaderoViewSet,
-    base_name='invernadero')
-
+	r'invernaderos',
+	cultivo.InvernaderoViewSet,
+	base_name='invernadero')
 
 lote_routes = router.register(
-    r'lotes',
-    cultivo.LoteSiembraViewSet,
-    base_name='lote')
+	r'lotes',
+	cultivo.LoteSiembraViewSet,
+	base_name='lote')
 
 # Seguimiento Module
 muestras_routes = router.register(
 	r'muestras',
-    muestra.MuestraCultivoViewSet,
-    base_name='muestras'
+	muestra.MuestraCultivoViewSet,
+	base_name='muestras'
 )
-
 
 actividades_cultivo = cultivo_routes.register(
 	r'actividades',
-    seguimiento_cultivos.ActividadesCultivoViewSet,
-    base_name='cultivo-actividades',
+	seguimiento_cultivos.ActividadesCultivoViewSet,
+	base_name='cultivo-actividades',
 	parents_query_lookups=['cultivo']
 )
 
-
 insumos = router.register(
 	r'insumos',
-    seguimiento_cultivos.InsumoViewSet,
-    base_name='insumo'
+	seguimiento_cultivos.InsumoViewSet,
+	base_name='insumo'
 )
 
 muestras_cultivo = cultivo_routes.register(
@@ -116,32 +113,31 @@ muestras_cultivo = cultivo_routes.register(
 	parents_query_lookups=['cultivo']
 )
 
-
 # Pedidos Module
 
 cliente_routes = router.register(
-    r'clientes',
-    clientes.ClienteViewSet,
-    base_name='cliente'
+	r'clientes',
+	clientes.ClienteViewSet,
+	base_name='cliente'
 )
 
 cliente_routes = router.register(
-    r'proovedores',
-    cultivo.ProovedorViewSet,
-    base_name='proovedor'
+	r'proovedores',
+	cultivo.ProovedorViewSet,
+	base_name='proovedor'
 )
 
-
 cliente_routes = router.register(
-    r'categorias',
-    cultivo.CategoriaViewSet,
-    base_name='categoria'
+	r'categorias',
+	cultivo.CategoriaViewSet,
+	base_name='categoria'
 )
 urlpatterns = [
 	url(r'^auth/', views.obtain_auth_token),
 	url(r'^docs/', include('rest_framework_swagger.urls')),
-    url(r'^admin/', admin.site.urls),
-    url(r'^rest-auth/', include('rest_auth.urls'))
+	url(r'^admin/', admin.site.urls),
+	url(r'^rest-auth/', include('rest_auth.urls')),
+	url(r'^tipo-parcelas/$', cultivo.TipoParcelaViewSet.as_view(), name='tipo-parcela')
 ]
 
 urlpatterns += router.urls

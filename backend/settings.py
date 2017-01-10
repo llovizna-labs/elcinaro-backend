@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -24,8 +23,6 @@ SECRET_KEY = 'b%n$tr%^(1rf!+t1ejb=^epimt%1(7rh7gps6wqm8sh$$+9wj7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-
 
 ALLOWED_HOSTS = ['*']
 
@@ -45,9 +42,9 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'rest_framework',
-    'rest_framework.authtoken',
+	'rest_framework.authtoken',
 	'rest_framework_swagger',
-    'rest_auth',
+	'rest_auth',
 	'import_export',
 	'corsheaders',
 	'django_extensions',
@@ -55,19 +52,19 @@ INSTALLED_APPS = [
 	'suelos',
 	'seguimiento',
 	'pedidos',
-    'managment'
+	'managment'
 ]
 
 MIDDLEWARE_CLASSES = [
 	'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+	'corsheaders.middleware.CorsMiddleware',
+	'django.middleware.common.CommonMiddleware',
+	'django.middleware.csrf.CsrfViewMiddleware',
+	'django.contrib.auth.middleware.AuthenticationMiddleware',
+	'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+	'django.contrib.messages.middleware.MessageMiddleware',
+	'django.middleware.clickjacking.XFrameOptionsMiddleware',
+	'django.middleware.security.SecurityMiddleware',
 
 ]
 
@@ -90,7 +87,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'backend.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
@@ -120,12 +116,10 @@ import dj_database_url
 
 DATABASES = {}
 
-DATABASES['default'] = dj_database_url.config()
+DATABASES['default'] = dj_database_url.config(default='postgres://postgres:admin@localhost:5432/elcinaro')
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-
-
 
 # Static asset configuration
 import os
@@ -135,7 +129,6 @@ STATIC_ROOT = 'staticfiles'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = ()
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -155,7 +148,6 @@ AUTH_PASSWORD_VALIDATORS = [
 	},
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -169,12 +161,10 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-
 
 # Django Rest Framework settings
 # http://www.django-rest-framework.org/
@@ -188,17 +178,14 @@ REST_FRAMEWORK = {
 	#  'DEFAULT_RENDERER_CLASSES': [
 	#     'rest_framework.renderers.<corresponding_renderer>',
 	# ]
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.TokenAuthentication',
-    ),
+	'DEFAULT_AUTHENTICATION_CLASSES': (
+		'rest_framework.authentication.BasicAuthentication',
+		'rest_framework.authentication.SessionAuthentication',
+		'rest_framework.authentication.TokenAuthentication',
+	),
 	'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 100
+	'PAGE_SIZE': 100
 }
-
-
-
 
 SWAGGER_SETTINGS = {
 	'exclude_namespaces': [],

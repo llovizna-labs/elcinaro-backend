@@ -36,6 +36,9 @@ class Insumo(models.Model):
 	proovedor = models.ForeignKey(Proovedor)
 	cantidad = models.FloatField(default=0.0)
 	medida = models.IntegerField(choices=MEDIDAS, default=5)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+
 	def __str__(self):
 			return '%s' % self.nombre
 

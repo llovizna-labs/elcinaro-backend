@@ -35,7 +35,7 @@ class InsumoSerializer(serializers.ModelSerializer):
 	medida = serializers.ChoiceField(choices=MEDIDAS, default='l')
 	class Meta:
 		model = Insumo
-		fields = ('id', 'nombre', 'cantidad', 'medida', 'proovedor')
+		fields = ('id', 'nombre', 'cantidad', 'medida', 'proovedor', 'updated')
 
 
 class ActividadesSerializer(serializers.ModelSerializer):
