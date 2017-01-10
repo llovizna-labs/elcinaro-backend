@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
                 ('descripcion', models.CharField(blank=True, max_length=255)),
                 ('telefono', models.CharField(blank=True, max_length=255)),
                 ('direccion', models.CharField(blank=True, max_length=255)),
-                ('categoria', models.ForeignKey(default='Semillas', on_delete=django.db.models.deletion.CASCADE, to='siembras.Categoria')),
+                ('categoria', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='siembras.Categoria')),
             ],
             options={
                 'verbose_name_plural': 'Proovedores',
