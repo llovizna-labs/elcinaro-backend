@@ -92,6 +92,8 @@ class LoteSiembraViewSet(viewsets.ModelViewSet):
 	search_fields = ('descripcion', 'familia__nombre', 'proovedor__nombre', 'nivel_germinacion', 'cantidad')
 
 
+
+
 class ProovedorViewSet(viewsets.ModelViewSet):
 	queryset = Proovedor.objects.all()
 	serializer_class = ProovedorSerializer

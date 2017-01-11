@@ -1,17 +1,22 @@
 from siembras.models import Cultivo
-
-__author__ = 'ronsuez'
 from rest_framework import serializers
 from seguimiento.models import ActividadesCultivo, Insumo, MEDIDAS, ACTIVIDADES, InsumoCultivo, \
 	PlagasCultivo, CosechaCultivo
-from siembras.serializers.cultivo import CultivoSerializer as SiembrasCultivoSerializer, ProovedorSerializer
+from siembras.serializers.cultivo import CultivoSerializer as SiembrasCultivoSerializer, ProovedorSerializer, \
+	LoteSiembraSerializer
 
 
 class CultivoSerializer(serializers.ModelSerializer):
+
+	cultivo_lote = serializers.SerializerMethodField('_get_lote')
+
 	class Meta:
 		model = Cultivo
-		fields = ('id', 'lote')
+		fields = ('id', 'lote', 'cultivo_lote')
 
+	def _get_lote(self, obj):
+		serializer = LoteSiembraSerializer(obj.lote)
+		return serializer.data
 
 class PlagasCultivoSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -35,11 +40,16 @@ class CosechaCultivoSerializer(serializers.ModelSerializer):
 
 class InsumoSerializer(serializers.ModelSerializer):
 	medida = serializers.ChoiceField(choices=MEDIDAS, default='l')
-	#proovedor = ProovedorSerializer()
+	insumo_proovedor = serializers.SerializerMethodField('_get_proovedor')
 
 	class Meta:
 		model = Insumo
-		fields = ('id', 'nombre', 'codigo','cantidad', 'medida', 'proovedor', 'updated')
+		read_only_fields = ('updated',)
+		fields = ('id', 'nombre', 'codigo', 'cantidad', 'medida', 'proovedor',  'insumo_proovedor', 'updated')
+
+	def _get_proovedor(self, obj):
+		serializer = ProovedorSerializer(obj.proovedor)
+		return serializer.data
 
 
 class ActividadesSerializer(serializers.ModelSerializer):
@@ -50,12 +60,9 @@ class ActividadesSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ActividadesCultivo
 		fields = (
-		'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+			'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
 
-	# def create(self, validated_data):
-	# 	insumo = validated_data.pop('insumo')
-	#
-	# 	actividad =
+
 
 
 class ActividadesCultivoSerializer(serializers.ModelSerializer):
@@ -64,4 +71,4 @@ class ActividadesCultivoSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = ActividadesCultivo
 		fields = (
-		'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+			'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')

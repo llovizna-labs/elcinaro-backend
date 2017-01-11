@@ -45,26 +45,39 @@ class CategoriaSerializer(serializers.ModelSerializer):
 
 
 class ProovedorSerializer(serializers.ModelSerializer):
-	categoria = CategoriaSerializer(read_only=True)
+	proovedor_categoria = serializers.SerializerMethodField('_get_categoria')
+
 	class Meta:
-		fields = ('id', 'nombre', 'descripcion', 'telefono', 'direccion', 'categoria', 'created', 'updated')
+		fields = ('id', 'nombre', 'descripcion', 'telefono', 'direccion', 'categoria', 'created', 'updated',
+		          'proovedor_categoria')
 		model = Proovedor
+
+	def _get_categoria(self, obj):
+		serializer = CategoriaSerializer(obj.categoria)
+		return serializer.data
 
 
 class SemillaSerializer(serializers.ModelSerializer):
-	familia = RubroSerializer(read_only=True)
-	proovedor = ProovedorSerializer(read_only=True)
-
 	cultivos_count = serializers.SerializerMethodField()
+	semilla_proovedor = serializers.SerializerMethodField('_get_proovedor')
+	semilla_familia = serializers.SerializerMethodField('_get_rubro')
 
 	class Meta:
 		fields = ('id', 'familia', 'proovedor', 'descripcion', 'cantidad', 'unidad', 'codigo', 'fecha_compra',
-		          'nivel_germinacion', 'created', 'updated', 'cultivos_count')
+		          'nivel_germinacion', 'created', 'updated', 'cultivos_count', 'semilla_proovedor', 'semilla_familia')
 		model = Semilla
 		read_only_fields = ('cultivos_count',)
 
 	def get_cultivos_count(self, obj):
 		return Cultivo.objects.filter(lote__semilla_utilizada=obj.pk).count()
+
+	def _get_proovedor(self, obj):
+		serializer = ProovedorSerializer(obj.proovedor)
+		return serializer.data
+
+	def _get_rubro(self, obj):
+		serializer = RubroSerializer(obj.familia)
+		return serializer.data
 
 
 class LoteSiembraSerializer(serializers.ModelSerializer):
@@ -79,13 +92,25 @@ class LoteSiembraSerializer(serializers.ModelSerializer):
 
 class CultivoSerializer(serializers.ModelSerializer):
 	muestras = CultivoMuestraSerializer(many=True, read_only=True)
-	lote = LoteSiembraSerializer(read_only=True)
+	cultivo_lote = serializers.SerializerMethodField('_get_lote')
+	area_siembra = serializers.SerializerMethodField('_get_area_siembra')
 
 	class Meta:
 		model = Cultivo
 		fields = (
-			'id', 'codigo', 'fecha_siembra', 'lote', 'invernadero', 'parcela', 'posicion_inicial', 'posicion_final',
-			'densidad_siembra', 'muestras')
+			'id', 'codigo', 'fecha_siembra', 'lote', 'area_siembra', 'posicion_inicial', 'posicion_final',
+			'densidad_siembra', 'muestras', 'cultivo_lote')
+
+	def _get_lote(self, obj):
+		serializer = LoteSiembraSerializer(obj.lote)
+		return serializer.data
+
+	def _get_area_siembra(self, obj):
+		if obj.parcela is not None:
+			serializer = ParcelaSerializer(obj.parcela)
+		else:
+			serializer = InvernaderoSerializer(obj.invernadero)
+		return serializer.data
 
 
 class ParcelaSerializer(serializers.ModelSerializer):

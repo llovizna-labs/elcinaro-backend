@@ -33,7 +33,7 @@ ACTIVIDADES = (
 class Insumo(models.Model):
 	nombre = models.CharField(max_length=255)
 	codigo = models.CharField(max_length=255, blank=True)
-	proovedor = models.ForeignKey(Proovedor)
+	proovedor = models.ForeignKey(Proovedor, related_name='insumo_proovedor')
 	cantidad = models.FloatField(default=0.0)
 	medida = models.IntegerField(choices=MEDIDAS, default=5)
 	created = models.DateTimeField(auto_now_add=True)
