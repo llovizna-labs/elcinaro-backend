@@ -81,13 +81,18 @@ class SemillaSerializer(serializers.ModelSerializer):
 
 
 class LoteSiembraSerializer(serializers.ModelSerializer):
-	semilla_utilizada = SemillaSerializer(read_only=True)
+	lote_semilla = serializers.SerializerMethodField('_get_semilla')
 
 	class Meta:
 		model = LoteSiembra
 		fields = (
-			'id', 'semilla_utilizada', 'cantidad_semillas_enviadas', 'cantidad_semillas_recibidas', 'fecha_enviado',
+			'id', 'semilla_utilizada', 'lote_semilla', 'cantidad_semillas_enviadas', 'cantidad_semillas_recibidas',
+			'fecha_enviado',
 			'fecha_recibido', 'germinado', 'proovedor')
+
+	def _get_semilla(self, obj):
+		serializer = SemillaSerializer(obj.semilla_utilizada)
+		return serializer.data
 
 
 class CultivoSerializer(serializers.ModelSerializer):

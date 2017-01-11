@@ -66,9 +66,11 @@ class ActividadesSerializer(serializers.ModelSerializer):
 
 
 class ActividadesCultivoSerializer(serializers.ModelSerializer):
-	cultivo = SiembrasCultivoSerializer()
+	# cultivo = SiembrasCultivoSerializer()
+	# cosecha = CosechaCultivoSerializer(allow_null=True)
+	# insumo = InsumoCultivoSerializer(allow_null=True)
 
 	class Meta:
 		model = ActividadesCultivo
 		fields = (
-			'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+			'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion')

@@ -21,7 +21,7 @@ class StandardResultsSetPagination(PageNumberPagination):
 	max_page_size = 1000
 
 
-@permission_classes((IsAuthenticatedOrReadOnly, ))
+@permission_classes((IsAuthenticatedOrReadOnly,))
 class ActividadesCultivoViewSet(viewsets.ModelViewSet):
 	queryset = ActividadesCultivo.objects.all()
 	serializer_class = ActividadesCultivoSerializer
@@ -32,13 +32,12 @@ class ActividadesCultivoViewSet(viewsets.ModelViewSet):
 
 
 # class ActividadesViewSet(viewsets.ModelViewSet):
-# queryset = ActividadesCultivo.objects.all()
+# 	queryset = ActividadesCultivo.objects.all()
 # 	serializer_class = ActividadesCultivoSerializer
 # 	model = ActividadesCultivo
 # 	pagination_class = StandardResultsSetPagination
 # 	filter_backends = (OrderingFilter, SearchFilter)
 # 	ordering_fields = ('fecha_realizacion', 'actividad')
-
 
 
 class InsumoViewSet(viewsets.ModelViewSet):
@@ -51,7 +50,6 @@ class InsumoViewSet(viewsets.ModelViewSet):
 
 
 class ActividadesViewSet(generics.ListCreateAPIView):
-
 	def create(self, request, *args, **kwargs):
 		actividades = ['riego', 'desmalezamiento', 'limpieza', 'observaciones']
 		insumos = ['fertilizacion', 'plaguicida']

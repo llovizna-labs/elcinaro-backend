@@ -46,13 +46,13 @@ rubro_routes = router.register(
 	cultivo.RubroViewSet,
 	base_name='rubro'
 )
-
+#
 semilla_routes = router.register(
 	r'semillas',
 	cultivo.SemillaViewSet,
 	base_name='semilla'
 )
-
+#
 rubro_meta = rubro_routes.register(
 	r'media',
 	cultivo.RubroMediaViewSet,
@@ -60,11 +60,11 @@ rubro_meta = rubro_routes.register(
 	parents_query_lookups=['rubro']
 )
 
-actividades = router.register(
-	r'actividades',
-	seguimiento_cultivos.ActividadesViewSet,
-	base_name='actividades'
-)
+# actividades = router.register(
+# 	r'actividades',
+# 	seguimiento_cultivos.ActividadesViewSet,
+# 	base_name='actividades'
+# )
 
 cultivo_routes = router.register(
 	r'cultivos',
@@ -84,7 +84,7 @@ invernadero_routes = router.register(
 lote_routes = router.register(
 	r'lotes',
 	cultivo.LoteSiembraViewSet,
-	base_name='lote')
+	base_name='lote_siembra')
 
 # Seguimiento Module
 muestras_routes = router.register(
@@ -92,7 +92,7 @@ muestras_routes = router.register(
 	muestra.MuestraCultivoViewSet,
 	base_name='muestras'
 )
-
+#
 actividades_cultivo = cultivo_routes.register(
 	r'actividades',
 	seguimiento_cultivos.ActividadesCultivoViewSet,
@@ -114,20 +114,20 @@ muestras_cultivo = cultivo_routes.register(
 )
 
 # Pedidos Module
-
+#
 cliente_routes = router.register(
 	r'clientes',
 	clientes.ClienteViewSet,
 	base_name='cliente'
 )
 
-cliente_routes = router.register(
+proovedor_routes = router.register(
 	r'proovedores',
 	cultivo.ProovedorViewSet,
 	base_name='proovedor'
 )
 
-cliente_routes = router.register(
+categoria_routes = router.register(
 	r'categorias',
 	cultivo.CategoriaViewSet,
 	base_name='categoria'
