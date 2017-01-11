@@ -46,6 +46,9 @@ class RubroMediaViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
 	queryset = RubroImagen.objects.all()
 	serializer_class = RubroImagenSerializer
 	model = RubroImagen
+	pagination_class = StandardResultsSetPagination
+	filter_backends = (OrderingFilter, SearchFilter)
+	ordering_fields = ('name', 'created', 'updated',)
 
 
 @permission_classes((IsAuthenticatedOrReadOnly,))

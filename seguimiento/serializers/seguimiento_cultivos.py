@@ -4,7 +4,8 @@ __author__ = 'ronsuez'
 from rest_framework import serializers
 from seguimiento.models import ActividadesCultivo, Insumo, MEDIDAS, ACTIVIDADES, InsumoCultivo, \
 	PlagasCultivo, CosechaCultivo
-from siembras.serializers.cultivo import CultivoSerializer as SiembrasCultivoSerializer
+from siembras.serializers.cultivo import CultivoSerializer as SiembrasCultivoSerializer, ProovedorSerializer
+
 
 class CultivoSerializer(serializers.ModelSerializer):
 	class Meta:
@@ -31,11 +32,14 @@ class CosechaCultivoSerializer(serializers.ModelSerializer):
 		model = CosechaCultivo
 		fields = ('cultivo', 'fecha_cosecha', 'cantidad', 'medida')
 
+
 class InsumoSerializer(serializers.ModelSerializer):
 	medida = serializers.ChoiceField(choices=MEDIDAS, default='l')
+	#proovedor = ProovedorSerializer()
+
 	class Meta:
 		model = Insumo
-		fields = ('id', 'nombre', 'cantidad', 'medida', 'proovedor', 'updated')
+		fields = ('id', 'nombre', 'codigo','cantidad', 'medida', 'proovedor', 'updated')
 
 
 class ActividadesSerializer(serializers.ModelSerializer):
@@ -45,7 +49,8 @@ class ActividadesSerializer(serializers.ModelSerializer):
 
 	class Meta:
 		model = ActividadesCultivo
-		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
+		fields = (
+		'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
 
 	# def create(self, validated_data):
 	# 	insumo = validated_data.pop('insumo')
@@ -55,7 +60,8 @@ class ActividadesSerializer(serializers.ModelSerializer):
 
 class ActividadesCultivoSerializer(serializers.ModelSerializer):
 	cultivo = SiembrasCultivoSerializer()
+
 	class Meta:
 		model = ActividadesCultivo
-		fields = ('id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
-
+		fields = (
+		'id', 'cultivo', 'actividad', 'observaciones', 'fecha_realizacion', 'cosecha', 'insumo', 'crecimiento')
