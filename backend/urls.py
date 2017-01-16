@@ -106,6 +106,17 @@ insumos = router.register(
 	base_name='insumo'
 )
 
+cosechas = router.register(
+	r'cosechas',
+	seguimiento_cultivos.CosechaViewSet,
+	base_name='cosechas'
+)
+
+plagas = router.register(
+	r'plagas',
+	seguimiento_cultivos.PlagaViewSet,
+	base_name='plagas'
+)
 muestras_cultivo = cultivo_routes.register(
 	r'muestras',
 	muestra.MuestraCultivoViewSet,

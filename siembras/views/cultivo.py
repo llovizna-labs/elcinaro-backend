@@ -51,16 +51,16 @@ class RubroMediaViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
 	ordering_fields = ('name', 'created', 'updated',)
 
 
-@permission_classes((IsAuthenticatedOrReadOnly,))
 class CultivoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
 	queryset = Cultivo.objects.all()
 	serializer_class = CultivoSerializer
 	model = Cultivo
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)
-	search_fields = ('lote__semilla_utilizada__familia__nombre',)
-	ordering_fields = (
-		'lote__id', 'lote__semilla_utilizada__familia__nombre', 'lote__semilla_utilizada__descripcion', 'fecha_siembra')
+	search_fields = ('id','lote__semilla_utilizada__familia__nombre')
+	ordering_fields = ('created', 'updated',
+	                   'lote__id', 'lote__semilla_utilizada__familia__nombre', 'lote__semilla_utilizada__descripcion',
+	                   'fecha_siembra')
 
 
 class TipoParcelaViewSet(generics.ListAPIView):
@@ -74,12 +74,20 @@ class ParcelaViewSet(viewsets.ModelViewSet):
 	queryset = Parcela.objects.all()
 	serializer_class = ParcelaSerializer
 	model = Parcela
+	pagination_class = StandardResultsSetPagination
+	filter_backends = (OrderingFilter, SearchFilter)
+	search_fields = ('codigo',)
+	ordering_fields = ()
 
 
 class InvernaderoViewSet(viewsets.ModelViewSet):
 	queryset = Invernadero.objects.all()
 	serializer_class = InvernaderoSerializer
 	model = Parcela
+	pagination_class = StandardResultsSetPagination
+	filter_backends = (OrderingFilter, SearchFilter)
+	search_fields = ('codigo',)
+	ordering_fields = ()
 
 
 class LoteSiembraViewSet(viewsets.ModelViewSet):
@@ -88,10 +96,10 @@ class LoteSiembraViewSet(viewsets.ModelViewSet):
 	model = LoteSiembra
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)
-	ordering_fields = ('familia__nombre', 'proovedor__nombre', 'nivel_germinacion', 'cantidad')
-	search_fields = ('descripcion', 'familia__nombre', 'proovedor__nombre', 'nivel_germinacion', 'cantidad')
-
-
+	ordering_fields = (
+	'familia__nombre', 'proovedor__nombre', 'nivel_germinacion', 'cantidad', 'semilla_utilizada__descripcion',
+	'fecha_enviado', 'fecha_recibido', 'created', 'updated')
+	search_fields = ('semilla_utilizada__descripcion',)
 
 
 class ProovedorViewSet(viewsets.ModelViewSet):

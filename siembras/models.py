@@ -1,5 +1,6 @@
 from __future__ import unicode_literals
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -33,7 +34,6 @@ class Rubro(models.Model):
 
 	def __unicode__(self):
 		return '%s ' % self.nombre
-
 
 
 class RubroImagen(models.Model):
@@ -111,6 +111,9 @@ class Parcela(models.Model):
 	def __unicode__(self):
 		return '%s ' % self.codigo
 
+	def _get_name(self):
+		return '%s %s' % (self.codigo, self.ubicacion)
+
 
 class Invernadero(models.Model):
 	nombre = models.CharField(max_length=255)
@@ -124,6 +127,9 @@ class Invernadero(models.Model):
 	def __unicode__(self):
 		return '%s ' % self.codigo
 
+	def _get_name(self):
+		return '%s - %s' % (self.codigo, self.ubicacion)
+
 
 class LoteSiembra(models.Model):
 	semilla_utilizada = models.ForeignKey(Semilla)
@@ -133,6 +139,8 @@ class LoteSiembra(models.Model):
 	fecha_recibido = models.DateField(blank=True, null=True)
 	proovedor = models.ForeignKey(Proovedor, blank=True, null=True)
 	germinado = models.BooleanField(default=True)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
 		return '%s' % (self.semilla_utilizada.descripcion)
@@ -154,6 +162,8 @@ class Cultivo(models.Model):
 	posicion_final = models.IntegerField()
 	densidad_siembra = models.FloatField()
 	qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
 	def plantas_sembradas(self):
 		count = self.posicion_final - self.posicion_inicial
@@ -166,7 +176,6 @@ class Cultivo(models.Model):
 		return '%s - %s' % (self.lote.__unicode__(), self.codigo)
 
 	def generate_qrcode(self):
-
 		qr = qrcode.QRCode(
 			version=1,
 			error_correction=qrcode.constants.ERROR_CORRECT_L,

@@ -10,9 +10,9 @@ from rest_framework.filters import DjangoFilterBackend, OrderingFilter, SearchFi
 from rest_framework.pagination import PageNumberPagination
 
 from seguimiento.serializers.seguimiento_cultivos import ActividadesCultivoSerializer, \
-	InsumoSerializer, InsumoCultivoSerializer, ActividadesSerializer
+	InsumoSerializer, InsumoCultivoSerializer, ActividadesSerializer, PlagaSerializer, CosechaCultivoSerializer
 
-from seguimiento.models import ActividadesCultivo, Insumo, InsumoCultivo
+from seguimiento.models import ActividadesCultivo, Insumo, InsumoCultivo, Plaga, CosechaCultivo
 
 
 class StandardResultsSetPagination(PageNumberPagination):
@@ -47,6 +47,24 @@ class InsumoViewSet(viewsets.ModelViewSet):
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)
 	ordering_fields = ('id', 'nombre', 'cantidad', 'proovedor')
+
+
+class CosechaViewSet(viewsets.ModelViewSet):
+	queryset = CosechaCultivo.objects.all()
+	serializer_class = CosechaCultivoSerializer
+	model = CosechaCultivo
+	pagination_class = StandardResultsSetPagination
+	filter_backends = (OrderingFilter, SearchFilter)
+	ordering_fields = ('id', 'nombre', 'cantidad',)
+
+
+class PlagaViewSet(viewsets.ModelViewSet):
+	queryset = Plaga.objects.all()
+	serializer_class = PlagaSerializer
+	model = Plaga
+	pagination_class = StandardResultsSetPagination
+	filter_backends = (OrderingFilter, SearchFilter)
+	ordering_fields = ('id', 'nombre', 'created', 'updated')
 
 
 class ActividadesViewSet(generics.ListCreateAPIView):

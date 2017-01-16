@@ -13,20 +13,20 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
 MEDIDAS = (
-    (1, 'cm'),
-    (2, 'mm'),
-    (3, 'ml'),
-    (4, 'l'),
-    (5, 'Kg'),
-    (6, 'mg'),
+	(1, 'cm'),
+	(2, 'mm'),
+	(3, 'ml'),
+	(4, 'l'),
+	(5, 'Kg'),
+	(6, 'mg'),
 )
 
 ACTIVIDADES = (
-    (1, 'Desmalezamiento'),
-    (2, 'Riego'),
-    (3, 'Fertilizacion'),
-    (4, 'Plaguicida'),
-    (5, 'Limpieza'),
+	(1, 'Desmalezamiento'),
+	(2, 'Riego'),
+	(3, 'Fertilizacion'),
+	(4, 'Plaguicida'),
+	(5, 'Limpieza'),
 )
 
 
@@ -40,16 +40,22 @@ class Insumo(models.Model):
 	updated = models.DateTimeField(auto_now=True)
 
 	def __str__(self):
-			return '%s' % self.nombre
+		return '%s' % self.nombre
 
 	def __unicode__(self):
-			return '%s' % self.nombre
+		return '%s' % self.nombre
+
 
 class Plaga(models.Model):
 	nombre = models.CharField(max_length=255)
 	descripcion = models.TextField(max_length=255)
-	imagen = models.CharField(max_length=255)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
+
+class PlagaImagen(models.Model):
+	plaga = models.ForeignKey(Plaga, related_name='plaga_media')
+	imagen = models.URLField(max_length=2000)
 
 
 class PlagasCultivo(models.Model):
@@ -59,23 +65,29 @@ class PlagasCultivo(models.Model):
 	cultivo = models.ForeignKey(Cultivo)
 
 
-
 class CosechaCultivo(models.Model):
-	cultivo = models.ForeignKey(Cultivo)
+	cultivo = models.ForeignKey(Cultivo, related_name='cosecha_cultivo')
 	fecha_cosecha = models.DateField(blank=True)
 	cantidad = models.FloatField(default=0.0)
 	medida = models.IntegerField(choices=MEDIDAS, default=5)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
 
+	class Meta:
+		ordering = ['-created']
+
+	def __unicode__(self):
+		return '%s' % (self.fecha_cosecha)
 
 
 class InsumoCultivo(models.Model):
 	MEDIDAS = (
-        (1, 'cm'),
-        (2, 'mm'),
-	    (3, 'ml'),
-	    (4, 'l'),
-	    (5, 'Kg'),
-	    (6, 'mg'),
+		(1, 'cm'),
+		(2, 'mm'),
+		(3, 'ml'),
+		(4, 'l'),
+		(5, 'Kg'),
+		(6, 'mg'),
 	)
 
 	fecha_aplicacion = models.DateTimeField()
@@ -86,14 +98,10 @@ class InsumoCultivo(models.Model):
 	medida = models.IntegerField(choices=MEDIDAS, default=5)
 
 	def __str__(self):
-			return '%s - %s' % (self.insumo.nombre,self.cultivo.__str__())
+		return '%s - %s' % (self.insumo.nombre, self.cultivo.__str__())
 
 	def __unicode__(self):
-			return '%s - %s' % (self.insumo.nombre, self.cultivo.__unicode__())
-
-
-
-
+		return '%s - %s' % (self.insumo.nombre, self.cultivo.__unicode__())
 
 
 class CultivoMuestra(models.Model):
@@ -103,17 +111,16 @@ class CultivoMuestra(models.Model):
 	fecha_registro = models.DateField(auto_now_add=True)
 
 	def __str__(self):
-			return '%s - %s ' % (self.codigo, self.cultivo.codigo)
+		return '%s - %s ' % (self.codigo, self.cultivo.codigo)
 
 	def __unicode__(self):
-			return '%s - %s ' % (self.codigo, self.cultivo.codigo)
-
+		return '%s - %s ' % (self.codigo, self.cultivo.codigo)
 
 
 class CrecimientoCultivo(models.Model):
 	MEDIDAS = (
-        (1, 'cm'),
-        (2, 'mm'),
+		(1, 'cm'),
+		(2, 'mm'),
 	)
 
 	muestra_cultivo = models.ForeignKey(CultivoMuestra, related_name='crecimiento_muestra')
@@ -124,7 +131,6 @@ class CrecimientoCultivo(models.Model):
 	qrcode = models.ImageField(upload_to='qrcode', blank=True, null=True)
 
 	def generate_qrcode(self):
-
 		qr = qrcode.QRCode(
 			version=1,
 			error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -146,23 +152,23 @@ class CrecimientoCultivo(models.Model):
 
 class ActividadesCultivo(models.Model):
 	ACTIVIDADES = (
-        (1, 'Desmalezamiento'),
-        (2, 'Riego'),
-        (3, 'Observaciones'),
-	    (4, 'Limpieza'),
+		(1, 'Desmalezamiento'),
+		(2, 'Riego'),
+		(3, 'Observaciones'),
+		(4, 'Limpieza'),
 	)
 
 	cultivo = models.ForeignKey(Cultivo, related_name='actividades')
 	fecha_realizacion = models.DateTimeField(blank=True, null=True)
 	actividad = models.IntegerField(default=1, choices=ACTIVIDADES)
 	observaciones = models.TextField(blank=True)
+
 	# crecimiento = models.ForeignKey(CrecimientoCultivo, null=True, blank=True)
 	# cosecha = models.ForeignKey(CosechaCultivo, null=True, blank=True)
 	# insumo = models.ForeignKey(InsumoCultivo, null=True, blank=True)
 
 	def __str__(self):
-			return '%s ' % self.cultivo.codigo
+		return '%s ' % self.cultivo.codigo
 
 	def __unicode__(self):
-			return '%s ' % self.cultivo.codigo
-
+		return '%s ' % self.cultivo.codigo
