@@ -57,7 +57,7 @@ class CultivoViewSet(NestedViewSetMixin, viewsets.ModelViewSet):
 	model = Cultivo
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)
-	search_fields = ('id','lote__semilla_utilizada__familia__nombre')
+	search_fields = ('id', 'lote__semilla_utilizada__familia__nombre')
 	ordering_fields = ('created', 'updated',
 	                   'lote__id', 'lote__semilla_utilizada__familia__nombre', 'lote__semilla_utilizada__descripcion',
 	                   'fecha_siembra')
@@ -96,10 +96,8 @@ class LoteSiembraViewSet(viewsets.ModelViewSet):
 	model = LoteSiembra
 	pagination_class = StandardResultsSetPagination
 	filter_backends = (OrderingFilter, SearchFilter)
-	ordering_fields = (
-	'familia__nombre', 'proovedor__nombre', 'nivel_germinacion', 'cantidad', 'semilla_utilizada__descripcion',
-	'fecha_enviado', 'fecha_recibido', 'created', 'updated')
-	search_fields = ('semilla_utilizada__descripcion',)
+	ordering_fields = ('created', 'updated',)
+	search_fields = ('rubro__nombre',)
 
 
 class ProovedorViewSet(viewsets.ModelViewSet):

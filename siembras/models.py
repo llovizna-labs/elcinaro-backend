@@ -132,10 +132,27 @@ class Invernadero(models.Model):
 
 
 class LoteSiembra(models.Model):
+	rubro = models.ForeignKey(Rubro)
+	created = models.DateTimeField(auto_now_add=True)
+	updated = models.DateTimeField(auto_now=True)
+	codigo = models.CharField(max_length=255)
+	fecha_enviado = models.DateField(blank=True, null=True)
+
+	def __str__(self):
+		return '%s' % (self.codigo)
+
+	def __unicode__(self):
+		return '%s' % (self.codigo)
+
+	class Meta:
+		verbose_name_plural = "Lotes de Siembra"
+
+
+class SemillaLote(models.Model):
 	semilla_utilizada = models.ForeignKey(Semilla)
+	semilla_lote = models.ForeignKey(LoteSiembra, related_name='semilla_lote')
 	cantidad_semillas_enviadas = models.FloatField(default=0.0)
 	cantidad_semillas_recibidas = models.FloatField(default=0.0)
-	fecha_enviado = models.DateField(blank=True, null=True)
 	fecha_recibido = models.DateField(blank=True, null=True)
 	proovedor = models.ForeignKey(Proovedor, blank=True, null=True)
 	germinado = models.BooleanField(default=True)
@@ -149,8 +166,7 @@ class LoteSiembra(models.Model):
 		return '%s' % (self.semilla_utilizada.descripcion)
 
 	class Meta:
-		verbose_name_plural = "Lotes de Siembra"
-
+		verbose_name_plural = "Semillas por Lote"
 
 class Cultivo(models.Model):
 	codigo = models.CharField(max_length=255)
@@ -174,6 +190,12 @@ class Cultivo(models.Model):
 
 	def __unicode__(self):
 		return '%s - %s' % (self.lote.__unicode__(), self.codigo)
+
+	def get_ubicacion(self):
+		if self.parcela:
+			return '%s' % self.parcela._get_name()
+		else:
+			return '%s' % self.invernadero._get_name()
 
 	def generate_qrcode(self):
 		qr = qrcode.QRCode(

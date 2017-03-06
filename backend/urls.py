@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
-from rest_framework_extensions.routers import ExtendedSimpleRouter
+from rest_framework_extensions.routers import ExtendedSimpleRouter, SimpleRouter
 from rest_framework.authtoken import views
 from siembras.views import cultivo
 from seguimiento.views import muestra, seguimiento_cultivos
@@ -59,12 +59,6 @@ rubro_meta = rubro_routes.register(
 	base_name='rubro-media',
 	parents_query_lookups=['rubro']
 )
-
-# actividades = router.register(
-# 	r'actividades',
-# 	seguimiento_cultivos.ActividadesViewSet,
-# 	base_name='actividades'
-# )
 
 cultivo_routes = router.register(
 	r'cultivos',
@@ -143,12 +137,21 @@ categoria_routes = router.register(
 	cultivo.CategoriaViewSet,
 	base_name='categoria'
 )
+
+# actividades = router.register(
+# 	r'actividades',
+# 	seguimiento_cultivos.ActividadesViewSet,
+# 	base_name='actividades'
+# )
+
+router_multiple = router.register('actividades', seguimiento_cultivos.ActividadesViewSet, base_name='actividades')
+#router_multiple.register('actividades', seguimiento_cultivos.ActividadesViewSet, base_name='actividades')
+
 urlpatterns = [
 	url(r'^auth/', views.obtain_auth_token),
 	url(r'^docs/', include('rest_framework_swagger.urls')),
 	url(r'^admin/', admin.site.urls),
 	url(r'^rest-auth/', include('rest_auth.urls')),
-	url(r'^tipo-parcelas/$', cultivo.TipoParcelaViewSet.as_view(), name='tipo-parcela')
 ]
 
 urlpatterns += router.urls

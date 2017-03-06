@@ -1,7 +1,8 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Categoria, Rubro, Semilla, Proovedor, LoteSiembra, TipoParcela, Parcela, Invernadero, Cultivo
+from .models import Categoria, Rubro, Semilla, Proovedor, LoteSiembra, TipoParcela, Parcela, Invernadero, Cultivo, \
+	SemillaLote
 from seguimiento.models import CultivoMuestra
 
 from import_export import resources
@@ -9,29 +10,38 @@ from import_export.admin import ImportExportModelAdmin
 
 
 class RubroResource(resources.ModelResource):
-
-    class Meta:
-        model = Rubro
-        skip_unchanged = True
-        report_skipped = False
-        fields = ('id', 'nombre',)
+	class Meta:
+		model = Rubro
+		skip_unchanged = True
+		report_skipped = False
+		fields = ('id', 'nombre',)
 
 
 class SemillaResource(resources.ModelResource):
-
 	class Meta:
 		model = Semilla
 		skip_unchanged = True
 		report_skipped = False
-		fields = ("id","descripcion", "familia__nombre", "proovedor__nombre", "cantidad", "unidad",)
+		fields = ("id", "descripcion", "familia__nombre", "proovedor__nombre", "cantidad", "unidad",)
 
 
 class CultivoInlineAdmin(admin.TabularInline):
 	model = Cultivo
 
+
+class SemillaLoteInline(admin.StackedInline):
+	model = SemillaLote
+
+
+class SemillaLoteAdmin(admin.ModelAdmin):
+	model = SemillaLote
+	list_display = (
+		"__unicode__", "proovedor", "cantidad_semillas_enviadas", "cantidad_semillas_recibidas")
+
+
 class LoteSiembraAdmin(admin.ModelAdmin):
 	model = LoteSiembra
-	list_display = ("__unicode__", "proovedor", "fecha_enviado", "cantidad_semillas_enviadas", "cantidad_semillas_recibidas")
+	inlines = [SemillaLoteInline, ]
 
 
 class CategoriaAdmin(admin.ModelAdmin):
@@ -50,6 +60,7 @@ class ProovedorAdmin(admin.ModelAdmin):
 class SemillaAdmin(ImportExportModelAdmin):
 	resource_class = SemillaResource
 
+
 class TipoParcelaAdmin(admin.ModelAdmin):
 	model = TipoParcela
 
@@ -58,7 +69,8 @@ class ParcelaAdmin(admin.ModelAdmin):
 	model = Parcela
 	inlines = [CultivoInlineAdmin]
 
-class InvernaderoAdmin (admin.ModelAdmin):
+
+class InvernaderoAdmin(admin.ModelAdmin):
 	model = Invernadero
 	list_display = ("nombre", "codigo", "ubicacion")
 	inlines = [CultivoInlineAdmin]
@@ -83,6 +95,8 @@ admin.site.register(Invernadero, InvernaderoAdmin)
 admin.site.register(TipoParcela, TipoParcelaAdmin)
 
 admin.site.register(LoteSiembra, LoteSiembraAdmin)
+
+admin.site.register(SemillaLote, SemillaLoteAdmin)
 
 admin.site.register(Categoria, CategoriaAdmin)
 

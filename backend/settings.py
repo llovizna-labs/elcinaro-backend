@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 	'import_export',
 	'corsheaders',
 	'django_extensions',
+	'drf_multiple_model',
 	'siembras',
 	'suelos',
 	'seguimiento',
